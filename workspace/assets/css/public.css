@@ -1,0 +1,38 @@
+#system-navigation {
+  margin:0 -19px;
+  padding:0 19px;
+  min-width:600px;
+}
+#system-navigation ul.menu {
+  margin:0 -19px;
+} 
+#nav {
+  min-width:600px;
+}
+body form {
+  min-width:536px;
+}
+body.public #nav {
+  height:30px;
+  padding-bottom:10px;
+}
+body.public #nav > li {
+  padding:0;
+}
+body.public #nav > li a {
+  color:#666;
+  padding:14px 10px;
+  height:2px;
+  overflow:hidden;
+}
+body.public #nav > li a:hover,
+body.public #nav > li a.active,
+body.public #nav > li a:active {
+  color:#fff;
+  background-image:url("../../../symphony/assets/images/navigation.png");
+}
+body.public #nav > li a:hover {
+  background-color:#7E7E70;
+  background-position:0 -30px;
+  position:relative;
+}
