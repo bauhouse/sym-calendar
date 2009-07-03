@@ -39,7 +39,7 @@
   <p>Symphony lets you to create small blocks of XSLT code called utilities, which you can use as building blocks to construct your site’s pages. Due to the nature of XSLT, these utilities are highly reusable, so the next time you’re developing a website you’ll probably find you’ve already done half the work.</p>
   
   <h3>Symphony Resources</h3>
-  <p>The Symphony <a href="http://overture21.com/forum/">community forum</a> is full of friendly and knowledgeable Symphony users, and the Symphony team are always quick to respond, so it’s a great place to go if you have questions.</p>
+  <p>The Symphony <a href="http://symphony-cms.com/forum/">community forum</a> is full of friendly and knowledgeable Symphony users, and the Symphony team are always quick to respond, so it’s a great place to go if you have questions.</p>
 </xsl:template>
   
 </xsl:stylesheet>
