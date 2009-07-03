@@ -150,25 +150,19 @@
 <html>
   <head>
     <title><xsl:value-of select="$website-name"/></title>
-    <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/screen.css" />
-    <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/system.css" />
-    <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/site.css" />
+    <link rel="stylesheet" type="text/css" href="{$root}/symphony/assets/forms.css" />
     <xsl:if test="$content-type = 'tables'">
-      <style>
-        <xsl:attribute name="type">text/css</xsl:attribute>
-        <xsl:text>@import url("</xsl:text>
-        <xsl:value-of select="concat($root,'/symphony/assets/tables.css')"/>
-        <xsl:text>");</xsl:text>
-      </style>
+	  <link rel="stylesheet" type="text/css" href="{$root}/symphony/assets/tables.css" />
     </xsl:if>
-  <!--[if IE]><link rel="stylesheet" href="http://designadmin.com/beta/symphony/assets/legacy.css" type="text/css"><![endif]-->
+	<xsl:call-template name="system-nav-css"/>
+    <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/site.css" />
   </head>
   <body class="site {$content-type}">
-    <xsl:call-template name="system-navigation"/>
     <form action="" method="post" enctype="multipart/form-data">
       <xsl:if test="not($entry) or $entry = 'sort'">
         <xsl:attribute name="action"><xsl:value-of select="concat($current-root,'/edit/')"/></xsl:attribute>
       </xsl:if>
+      <xsl:call-template name="system-navigation"/>
       <input name="MAX_FILE_SIZE" type="hidden" value="5242880" />
       <xsl:call-template name="notice"/>
       <xsl:call-template name="confirm-delete"/>

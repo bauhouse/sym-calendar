@@ -2,8 +2,9 @@
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+<xsl:param name="system-navigation-switch" select="'on'"/>
+
 <xsl:template name="system-navigation">
-  <xsl:param name="system-navigation-switch" select="'on'"/>
   <xsl:if test="$is-logged-in and $system-navigation-switch = 'on'">
     <div id="system-navigation">
       <ul class="menu main-menu">
@@ -39,6 +40,12 @@
       </ul>
     </li>
   </xsl:for-each>
+</xsl:template>
+
+<xsl:template name="system-nav-css">
+  <xsl:if test="$is-logged-in and $system-navigation-switch = 'on'">
+    <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/system.css" />
+  </xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>

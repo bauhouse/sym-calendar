@@ -13,6 +13,24 @@ System Navigation
   }
 
 
+/* system navigation
+----------------------------------------------- */
+#system-navigation {
+	min-width:600px;
+	margin:4.5em -19px 0 -19px;
+	padding:0 19px;
+}
+#system-navigation ul.menu {
+	margin:0 -19px;
+}
+body.tables #system-navigation ul.menu {
+	margin:0;
+}
+h1 {
+	padding-top:1.6em;
+}
+
+
 /* menu (horizontal submenus)
 ----------------------------------------------- */
 ul.menu,
