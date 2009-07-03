@@ -1,20 +1,4 @@
-﻿/* system navigation
------------------------------------------------ */
-#system-navigation {
-	min-width:600px;
-	position:relative;
-	z-index: 1000;
-}
-body.tables #system-navigation {
-	margin:0;
-	padding:0;
-}
-body.tables #system-navigation ul.menu {
-	margin:0;
-}
-
-
-/* keep layout from breaking at smaller widths
+﻿/* keep layout from breaking at smaller widths
 ----------------------------------------------- */
 #nav {
 	min-width:600px;
