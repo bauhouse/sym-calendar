@@ -17,6 +17,7 @@ body.public #nav > li a {
 	float:left;
 	color:#666;
 	padding:15px 1em;
+	height:0;
 }
 body.public #nav > li a:hover,
 body.public #nav > li a.active,

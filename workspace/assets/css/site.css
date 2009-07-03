@@ -36,6 +36,7 @@ body.site #nav > li a {
 	float:left;
 	color:#666;
 	padding:15px 1em;
+	height:0;
 }
 body.system #nav > li.front-end a:hover,
 body.site #nav > li a:hover {
