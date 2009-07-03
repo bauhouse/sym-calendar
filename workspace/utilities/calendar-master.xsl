@@ -79,7 +79,6 @@
       <xsl:attribute name="type">text/css</xsl:attribute>
       <xsl:value-of select="concat('@import url(',$root,'/symphony/assets/basic.css);')"/>
       <xsl:value-of select="concat('@import url(',$root,'/symphony/assets/admin.css);')"/>
-      <xsl:value-of select="concat('@import url(',$root,'/symphony/assets/code.css);')"/>
       <xsl:value-of select="concat('@import url(',$workspace,'/assets/css/calendar.css);')"/>
     </style>
   </head>
