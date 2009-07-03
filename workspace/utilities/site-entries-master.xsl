@@ -164,12 +164,12 @@
   <!--[if IE]><link rel="stylesheet" href="http://designadmin.com/beta/symphony/assets/legacy.css" type="text/css"><![endif]-->
   </head>
   <body class="site {$content-type}">
+    <xsl:call-template name="system-navigation"/>
     <form action="" method="post" enctype="multipart/form-data">
       <xsl:if test="not($entry) or $entry = 'sort'">
         <xsl:attribute name="action"><xsl:value-of select="concat($current-root,'/edit/')"/></xsl:attribute>
       </xsl:if>
       <input name="MAX_FILE_SIZE" type="hidden" value="5242880" />
-      <xsl:call-template name="system-navigation"/>
       <xsl:call-template name="notice"/>
       <xsl:call-template name="confirm-delete"/>
       <h1><a href="{$root}/"><xsl:value-of select="$website-name"/></a></h1>

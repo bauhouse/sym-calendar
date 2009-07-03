@@ -83,8 +83,8 @@
     </style>
   </head>
   <body class="site">
+    <xsl:call-template name="system-navigation"/>
     <form action="" method="post">
-      <xsl:call-template name="system-navigation"/>
       <h1 id="top"><a href="{$root}/"><xsl:value-of select="$website-name"/></a></h1>
       <xsl:apply-templates select="data/navigation"/>
       <xsl:apply-templates/>

@@ -67,11 +67,11 @@
   <!--[if IE]><link rel="stylesheet" href="http://designadmin.com/beta/symphony/assets/legacy.css" type="text/css"><![endif]-->
   </head>
   <body class="site">
+    <xsl:call-template name="system-navigation"/>
     <form action="" method="post" enctype="multipart/form-data">
       <xsl:if test="$parent and not($self)">
         <xsl:attribute name="action"><xsl:value-of select="concat($current-root,'/',$parent,'/delete/')"/></xsl:attribute>
       </xsl:if>
-      <xsl:call-template name="system-navigation"/>
       <xsl:call-template name="notice"/>
       <h1><a href="{$root}/"><xsl:value-of select="$website-name"/></a></h1>
       <xsl:apply-templates select="data/navigation"/>

@@ -42,8 +42,8 @@
   <!--[if IE]><link rel="stylesheet" href="http://designadmin.com/beta/symphony/assets/legacy.css" type="text/css"><![endif]-->
   </head>
   <body class="{$page-type}">
+    <xsl:call-template name="system-navigation"/>
     <form action="" method="post">
-      <xsl:call-template name="system-navigation"/>
       <h1><a href="{$root}/"><xsl:value-of select="$website-name"/></a></h1>
       <xsl:apply-templates select="data/navigation"/>
       <xsl:apply-templates/>
