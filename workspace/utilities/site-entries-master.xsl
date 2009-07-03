@@ -55,8 +55,8 @@
 <xsl:variable name="user-id" select="/data/events/login-info/@id"/>
 
 <!-- paths -->
-<xsl:param name="current-root" select="concat($root,'/',$parent-path,'/',$current-page)"/>
-<xsl:param name="parent-page-root" select="concat($root,'/',$parent-path)"/>
+<xsl:param name="current-root" select="concat($root,$parent-path,'/',$current-page)"/>
+<xsl:param name="parent-page-root" select="concat($root,$parent-path)"/>
 <xsl:param name="parent-root" select="concat($parent-page-root,'/',$parent-page-handle)"/>
 <xsl:param name="self-root" select="concat($parent-page-root,'/',$self-page-handle)"/>
 <xsl:param name="child-root" select="concat($parent-page-root,'/',$child-page-handle)"/>
@@ -237,7 +237,7 @@
     </xsl:when>
     <xsl:when test="$entry and $entry != 'new' and $entry != 'delete' and $entry != 'edit' and $entry != 'sort'">
       <xsl:text> : </xsl:text>
-      <a href="{$entries-root}/{$entry}/{@id}/" title="Preview Entry: {$entry-title}"><xsl:value-of select="$entry-title"/></a>
+      <a href="{$entries-root}/{$entry}/{$entry-details/@id}/" title="Preview Entry: {$entry-title}"><xsl:value-of select="$entry-title"/></a>
       <a href="{$entries-root}/new/" title="Create a new {$entry-type}" class="create button">Create New</a>
     </xsl:when>
     <xsl:when test="$entry = 'new'">
