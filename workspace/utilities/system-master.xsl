@@ -25,10 +25,9 @@
 <html>
   <head>
     <title><xsl:value-of select="$website-name"/></title>
-    <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/screen.css" />
-    <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/system.css" />
+    <link rel="stylesheet" type="text/css" href="{$root}/symphony/assets/forms.css" />
+	<xsl:call-template name="system-nav-css"/>
     <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/site.css" />
-  <!--[if IE]><link rel="stylesheet" href="http://designadmin.com/beta/symphony/assets/legacy.css" type="text/css"><![endif]-->
   </head>
   <body class="system">
     <xsl:call-template name="system-navigation"/>

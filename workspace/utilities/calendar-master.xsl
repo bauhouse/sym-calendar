@@ -71,10 +71,11 @@
 <html>
   <head>
     <title><xsl:value-of select="$website-name"/></title>
-    <!-- link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/screen.css" / -->
-    <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/system.css" />
+    <link rel="stylesheet" type="text/css" href="{$root}/symphony/assets/basic.css" />
+    <link rel="stylesheet" type="text/css" href="{$root}/symphony/assets/admin.css" />
+	<xsl:call-template name="system-nav-css"/>
     <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/site.css" />
-    <!--[if IE]><link rel="stylesheet" href="http://designadmin.com/beta/symphony/assets/legacy.css" type="text/css"><![endif]-->
+    <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/calendar.css" />
     <style>
       <xsl:attribute name="type">text/css</xsl:attribute>
       <xsl:value-of select="concat('@import url(',$root,'/symphony/assets/basic.css);')"/>

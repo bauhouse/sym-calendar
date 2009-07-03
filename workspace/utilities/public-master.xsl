@@ -31,15 +31,9 @@
 <html>
   <head>
     <title><xsl:value-of select="$website-name"/></title>
-    <xsl:if test="$is-logged-in">
-      <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/system.css" />
-    </xsl:if>
-    <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/screen.css" />
-    <style>
-      <xsl:attribute name="type">text/css</xsl:attribute>
-      <xsl:value-of select="concat('@import url(',$workspace,'/assets/css/',$page-type,'.css);')"/>
-    </style>
-  <!--[if IE]><link rel="stylesheet" href="http://designadmin.com/beta/symphony/assets/legacy.css" type="text/css"><![endif]-->
+    <link rel="stylesheet" type="text/css" href="{$root}/symphony/assets/forms.css" />
+	<xsl:call-template name="system-nav-css"/>
+    <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/public.css" />
   </head>
   <body class="{$page-type}">
     <xsl:call-template name="system-navigation"/>
