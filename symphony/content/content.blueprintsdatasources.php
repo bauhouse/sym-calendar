@@ -29,7 +29,7 @@
 							__(
 								'Data source updated at %1$s. <a href="%2$s">Create another?</a> <a href="%2$s">View all Data sources</a>', 
 								array(
-									DateTimeObj::get(__SYM_TIME_FORMAT__), 
+									DateTimeObj::getTimeAgo(__SYM_TIME_FORMAT__), 
 									URL . '/symphony/blueprints/datasources/new/', 
 									URL . '/symphony/blueprints/components/'								)
 							), 
@@ -41,7 +41,7 @@
 							__(
 								'Data source created at %1$s. <a href="%2$s">Create another?</a> <a href="%3$s">View all Data source</a>', 
 								array(
-									DateTimeObj::get(__SYM_TIME_FORMAT__), 
+									DateTimeObj::getTimeAgo(__SYM_TIME_FORMAT__), 
 									URL . '/symphony/blueprints/datasources/new/', 
 									URL . '/symphony/blueprints/components/' 
 								)
@@ -423,7 +423,7 @@
 			$label->appendChild(Widget::Input('fields[required_url_param]', $fields['required_url_param']));
 			$fieldset->appendChild($label);
 			
-			$p = new XMLElement('p', __('An empty result will be returned when this parameter does not have a value.'));
+			$p = new XMLElement('p', __('An empty result will be returned when this parameter does not have a value. Do not wrap the parameter with curly-braces.'));
 			$p->setAttribute('class', 'help');
 			$fieldset->appendChild($p);			
 
@@ -520,7 +520,6 @@
 			$label = Widget::Label(__('Included Elements'));
 			
 			$options = array(
-
 				array('label' => __('Authors'), 'options' => array(				
 						array('username', ($fields['source'] == 'authors' && in_array('username', $fields['xml_elements'])), 'username'),
 						array('name', ($fields['source'] == 'authors' && in_array('name', $fields['xml_elements'])), 'name'),
@@ -528,19 +527,31 @@
 						array('author-token', ($fields['source'] == 'authors' && in_array('author-token', $fields['xml_elements'])), 'author-token'),
 						array('default-section', ($fields['source'] == 'authors' && in_array('default-section', $fields['xml_elements'])), 'default-section'),
 						array('formatting-preference', ($fields['source'] == 'authors' && in_array('formatting-preference', $fields['xml_elements'])), 'formatting-preference'),
-						)
-					),					
+				)),					
 			);
 			
 			foreach($field_groups as $section_id => $section_data){	
 				
 				$optgroup = array('label' => $section_data['section']->get('name'), 'options' => array());
 				
-				$optgroup['options'][] = array('system:pagination', ($fields['source'] == $section_data['section']->get('id') && @in_array('system:pagination', $fields['xml_elements'])), 'pagination');
+				$optgroup['options'][] = array(
+					'system:pagination', 
+					($fields['source'] == $section_data['section']->get('id') && @in_array('system:pagination', $fields['xml_elements'])), 
+					'pagination'
+				);
 				
 				foreach($section_data['fields'] as $input){
 					$elements = $input->fetchIncludableElements();
-					foreach($elements as $e) $optgroup['options'][] = array($e, ($fields['source'] == $section_data['section']->get('id') && @in_array($e, $fields['xml_elements'])), $e);
+					
+					foreach($elements as $name){
+						$selected = false;
+						
+						if($fields['source'] == $section_data['section']->get('id') && @in_array($name, $fields['xml_elements'])){
+							$selected = true;	
+						}
+						
+						$optgroup['options'][] = array($name, $selected, $name);
+					}
 				}
 				
 				$options[] = $optgroup;
@@ -672,7 +683,7 @@
 			$this->setPageType('form');	
 			
 			$DSManager = new DatasourceManager($this->_Parent);
-			$datasource = $DSManager->create($this->_context[1]);	
+			$datasource = $DSManager->create($this->_context[1], NULL, false);	
 			$about = $datasource->about();
 
 			$this->setTitle(__('%1$s &ndash; %2$s &ndash; %3$s', array(__('Symphony'), __('Data Source'), $about['name'])));

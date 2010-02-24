@@ -1,3 +1,5 @@
+/* @override http://symphony.local:8888/2/symphony/assets/installer/main.css */
+
 /* Basic elements */
 body {
 	margin: 0 auto;
@@ -109,8 +111,7 @@ h1 {
 	top: 80px;
 	right: 50%;
 	margin-right: 12em;
-	padding: 0 0 18px 40px;
-	background: url("logo.png") no-repeat;
+	padding: 0 0 18px 0;
 	text-align: right;
 	text-shadow: -2px 2px 3px #ccc;
 	font-weight: normal;
@@ -164,4 +165,13 @@ div.warning {
 	left: 0;
 	margin: 1.5em 0 -2.5em;
 	padding: 1em 1.25em 1em 3.25em;
+}
+
+/* Lists */
+ol{
+	margin-left: 1.5em;
+}
+
+ol li{
+	margin-bottom: 1em;
 }

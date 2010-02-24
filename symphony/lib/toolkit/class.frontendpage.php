@@ -66,9 +66,9 @@
 				$this->ExtensionManager->notifyMembers(
 					'FrontendOutputPreGenerate', '/frontend/',
 					array(
-						'page'		=> &$this,
-						'xml'		=> $this->_xml,
-						'xsl'		=> $this->_xsl
+						'page'	=> &$this,
+						'xml'	=> $this->_xml,
+						'xsl'	=> $this->_xsl
 					)
 				);
 				
@@ -90,6 +90,12 @@
 					}
 				}
 				
+				####
+				# Delegate: FrontendPreRenderHeaders
+				# Description: This is just prior to the page headers being rendered, and is suitable for changing them
+				# Global: Yes
+				$this->ExtensionManager->notifyMembers('FrontendPreRenderHeaders', '/frontend/');
+				
 				$output = parent::generate();
 				
 				####
@@ -97,7 +103,7 @@
 				# Description: Immediately after generating the page. Provided with string containing page source
 				# Global: Yes
 				$this->ExtensionManager->notifyMembers('FrontendOutputPostGenerate', '/frontend/', array('output' => &$output));
-				
+
 				$this->_Parent->Profiler->sample('XSLT Transformation', PROFILE_LAP);
 				
 				if (is_null($devkit) && !$output) {
@@ -116,7 +122,7 @@
 			if (!is_null($devkit)) {
 				$devkit->prepare($this, $this->_pageData, $this->_xml, $this->_param, $output);
 				
-				return $devkit->generate();
+				return $devkit->build();
 			}
 			
 			## EVENT DETAILS IN SOURCE
@@ -196,7 +202,7 @@
 
 			if(is_array($_GET) && !empty($_GET)){
 			    foreach($_GET as $key => $val){			    
-			        if(!in_array($key, array('page', 'debug', 'profile'))) $this->_param['url-' . $key] = $val;
+			        if(!in_array($key, array('symphony-page', 'debug', 'profile'))) $this->_param['url-' . $key] = $val;
 			    }
 			}
 			
@@ -205,6 +211,9 @@
 					$this->_param['cookie-' . $key] = $val;
 				}
 			}
+			
+			// Flatten parameters:
+			General::flattenArray($this->_param);
 
 			####
 			# Delegate: FrontendParamsResolve
@@ -284,7 +293,7 @@
 			# Delegate: FrontendPrePageResolve
 			# Description: Before page resolve. Allows manipulation of page without redirection
 			# Global: Yes
-			$this->ExtensionManager->notifyMembers('FrontendPrePageResolve', '/frontend/', array('row' => &$row, 'page' => $this->_page));
+			$this->ExtensionManager->notifyMembers('FrontendPrePageResolve', '/frontend/', array('row' => &$row, 'page' => &$this->_page));
 			
 			
 			## Default to the index page if no page has been specified

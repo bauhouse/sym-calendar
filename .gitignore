@@ -2,7 +2,4 @@
 .DS_Store
 *config.php
 .htaccess
-symphony/.htaccess
-workspace/
 manifest/
-install-log.txt
