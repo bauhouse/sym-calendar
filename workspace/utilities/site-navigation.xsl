@@ -35,7 +35,7 @@
 
 <xsl:template name="navigation-section-menus">
   <xsl:param name="navigation-type"/>
-  <li>
+  <li class="{title/@handle}">
     <xsl:value-of select="title"/>
     <ul>
       <xsl:for-each select="key('pages',title/@handle)">
