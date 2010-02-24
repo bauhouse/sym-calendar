@@ -10,61 +10,36 @@
 			return $ret;
 		}
 	}
-
-
-	if(!function_exists('__doit')){	
+	
+	if (!function_exists('__doit')) {
 		function __doit($source, $fields, &$result, &$obj, &$event, $filters, $position=NULL, $entry_id=NULL){
 
+			$post_values = new XMLElement('post-values');
+			$post = General::getPostData();
+
+			$filter_results = array();	
+			
 			## Create the post data cookie element
-			if(is_array($fields) && !empty($fields)){
-				$post_values = new XMLElement('post-values');
-				foreach($fields as $element_name => $value){
-					if(strlen($value) == 0) continue;
-					if(is_array($value)) {
-						foreach($value as $key => $value) {
-							$post_values->appendChild(new XMLElement($element_name, General::sanitize($value)));
-						}
-						continue;
-					}
-					$post_values->appendChild(new XMLElement($element_name, General::sanitize($value)));
-				}
-			}
-
-			## Combine FILES and POST arrays, indexed by their custom field handles
-			if(isset($_FILES['fields'])){
-				$filedata = General::processFilePostData($_FILES['fields']);
-
-				foreach($filedata as $handle => $data){
-					if(!isset($fields[$handle])) $fields[$handle] = $data;
-					elseif(isset($data['error']) && $data['error'] == 4) $fields[$handle] = NULL;
-					else{
-						foreach($data as $ii => $d){
-							if(isset($d['error']) && $d['error'] == 4) $fields[$handle][$ii] = NULL;
-							elseif(is_array($d) && !empty($d)){
-								foreach($d as $key => $val)
-									$fields[$handle][$ii][$key] = $val;
-							}						
-						}
-					}
-				}
+			if (is_array($post) && !empty($post)) {
+				General::array_to_xml($post_values, $fields, true);
 			}
 			
-			$filter_results = array();			
-
 			###
 			# Delegate: EventPreSaveFilter
 			# Description: Prior to saving entry from the front-end. This delegate will force the Event to terminate if it populates the error
 			#              array reference. Provided with references to this object, the POST data and also the error array
-			$obj->ExtensionManager->notifyMembers('EventPreSaveFilter', '/frontend/', array('fields' => $fields, 'event' => &$event, 'messages' => &$filter_results));
+			$obj->ExtensionManager->notifyMembers('EventPreSaveFilter', '/frontend/', array('fields' => $fields, 'event' => &$event, 'messages' => &$filter_results, 'post_values'  => &$post_values));
 
 			if(is_array($filter_results) && !empty($filter_results)){
 				foreach($filter_results as $fr){
 					list($type, $status, $message) = $fr;
 
 					$result->appendChild(buildFilterElement($type, ($status ? 'passed' : 'failed'), $message));
-					$result->appendChild($post_values);
+					
 					
 					if(!$status){
+						$result->appendChild($post_values);
+						
 						$result->setAttribute('result', 'error');
 						$result->appendChild(new XMLElement('message', __('Entry encountered errors when saving.')));
 						return false;
@@ -102,9 +77,7 @@
 				$entry->set('section_id', $source);
 			}
 
-			$filter_errors = array();			
-			
-
+			$filter_errors = array();
 
 			if(__ENTRY_FIELD_ERROR__ == $entry->checkPostData($fields, $errors, ($entry->get('id') ? true : false))):
 				$result->setAttribute('result', 'error');
@@ -151,7 +124,7 @@
 
 			## PASSIVE FILTERS ONLY AT THIS STAGE. ENTRY HAS ALREADY BEEN CREATED. 
 
-			if(in_array('send-email', $filters) && !in_array('expect-multiple', $filters)){
+			if(@in_array('send-email', $filters) && !@in_array('expect-multiple', $filters)){
 
 				if(!function_exists('__sendEmailFindFormValue')){
 					function __sendEmailFindFormValue($needle, $haystack, $discard_field_name=true, $default=NULL, $collapse=true){
@@ -242,7 +215,7 @@
 			# Delegate: EventPostSaveFilter
 			# Description: After saving entry from the front-end. This delegate will not force the Events to terminate if it populates the error
 			#              array reference. Provided with references to this object, the POST data and also the error array
-			$obj->ExtensionManager->notifyMembers('EventPostSaveFilter', '/frontend/', array('entry_id' => $entry_id, 
+			$obj->ExtensionManager->notifyMembers('EventPostSaveFilter', '/frontend/', array('entry_id' => $entry->get('id'), 
 																							 'fields' => $fields, 
 																							 'entry' => $entry, 
 																							 'event' => &$event, 
@@ -275,14 +248,14 @@
 			
 			return true;
 			
-			## End FUnction
+			## End Function
 		}
 	}
 	
 	
 	$result = new XMLElement(self::ROOTELEMENT);
 	
-	if(in_array('admin-only', $this->eParamFILTERS) && !$this->_Parent->isLoggedIn()){
+	if(@in_array('admin-only', $this->eParamFILTERS) && !$this->_Parent->isLoggedIn()){
 		$result->setAttribute('result', 'error');			
 		$result->appendChild(new XMLElement('message', __('Entry encountered errors when saving.')));
 		$result->appendChild(buildFilterElement('admin-only', 'failed'));
@@ -291,7 +264,7 @@
 
 	$entry_id = $position = $fields = NULL;	
 	
-	if(in_array('expect-multiple', $this->eParamFILTERS)){
+	if(@in_array('expect-multiple', $this->eParamFILTERS)){
 		if(is_array($_POST['fields']) && isset($_POST['fields'][0])){
 
 			$filedata = NULL;
@@ -323,7 +296,7 @@
 						}
 					}			
 				}
-				
+
 				$ret = __doit(self::getSource(), $fields, $entry, $this->_Parent, $this, $this->eParamFILTERS, $position, $entry_id);
 				
 				if(!$ret) $success = false;

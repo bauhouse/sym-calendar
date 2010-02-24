@@ -3,7 +3,7 @@
 	define_safe('__ENTRY_OK__', 0);
 	define_safe('__ENTRY_FIELD_ERROR__', 100);
 	
-	Class Entry extends Object{
+	Class Entry{
 		
 		var $_fields;
 		var $_Parent;
@@ -15,16 +15,12 @@
 			$this->_Parent =& $parent;
 			$this->_fields = array();
 			$this->_data = array();
-			
-			## Since we are not sure where the Admin object is, inspect
-			## all the parent objects
-			$this->catalogueParentObjects();			
 
 			if(class_exists('Administration')) $this->_engine = Administration::instance();
 			elseif(class_exists('Frontend')) $this->_engine = Frontend::instance();
 			else trigger_error(__('No suitable engine object found'), E_USER_ERROR);
 			
-			$this->creationDate = DateTimeObj::getGMT('c'); //$this->_engine->getDateObj();
+			$this->creationDate = DateTimeObj::getGMT('c');
 		}
 		
 		function set($field, $value){
@@ -36,13 +32,15 @@
 			return $this->_fields[$field];
 		}
 		
-		public function fetchAllAssociatedEntryCounts() {
-			if (is_null($this->get('section_id'))) return null;
+		public function fetchAllAssociatedEntryCounts($associated_sections=NULL) {
+			if(is_null($this->get('section_id'))) return NULL;
 			
-			$section = $this->_Parent->sectionManager->fetch($this->get('section_id'));
-			$associated_sections = $section->fetchAssociatedSections();
-			
-			if (!is_array($associated_sections) || empty($associated_sections)) return NULL;
+			if(is_null($associated_sections)) {
+				$section = $this->_Parent->sectionManager->fetch($this->get('section_id'));
+				$associated_sections = $section->fetchAssociatedSections();
+			}
+
+			if(!is_array($associated_sections) || empty($associated_sections)) return NULL;
 			
 			$counts = array();
 			
@@ -78,8 +76,8 @@
 			$errors = NULL;
 			$status = __ENTRY_OK__;
 			
-			if(!isset($this->_ParentCatalogue['sectionmanager'])) $SectionManager = new SectionManager($this->_engine);
-			else $SectionManager = $this->_ParentCatalogue['sectionmanager'];
+			$SectionManager = new SectionManager($this->_engine);
+			$EntryManager = new EntryManager($this->_engine);
 
 			$section = $SectionManager->fetch($this->get('section_id'));
 			$schema = $section->fetchFieldsSchema();
@@ -87,7 +85,7 @@
 			foreach($schema as $info){
 				$result = NULL;
 
-				$field = $this->_ParentCatalogue['entrymanager']->fieldManager->fetch($info['id']);
+				$field = $EntryManager->fieldManager->fetch($info['id']);
 
 				if($ignore_missing_fields && !isset($data[$field->get('element_name')])) continue;
 
@@ -103,6 +101,21 @@
 			return $status;			
 		}
 		
+		public function assignEntryId() {
+			$fields = $this->get();
+			$fields['creation_date'] = DateTimeObj::get('Y-m-d H:i:s');
+			$fields['creation_date_gmt'] = DateTimeObj::getGMT('Y-m-d H:i:s');
+			$fields['author_id'] = is_null($this->get('author_id')) ? '1' : $this->get('author_id'); // Author_id cannot be NULL
+			
+			Symphony::Database()->insert($fields, 'tbl_entries');
+			
+			if (!$entry_id = Symphony::Database()->getInsertID()) return null;
+			
+			$this->set('id', $entry_id);
+			
+			return $entry_id;
+		}
+		
 		function setDataFromPost($data, &$error, $simulate=false, $ignore_missing_fields=false){
 
 			$error = NULL;
@@ -110,27 +123,22 @@
 			$status = __ENTRY_OK__;
 			
 			// Entry has no ID, create it:
-			if(!$this->get('id') && $simulate == false) {
+			if (!$this->get('id') && $simulate == false) {
+				$entry_id = $this->assignEntryId();
 				
-				$fields = $this->get();
-				$fields['creation_date'] = DateTimeObj::get('Y-m-d H:i:s');
-				$fields['creation_date_gmt'] = DateTimeObj::getGMT('Y-m-d H:i:s');
-				
-				$this->_engine->Database->insert($fields, 'tbl_entries');
-				if(!$entry_id = $this->_engine->Database->getInsertID()) return __ENTRY_FIELD_ERROR__;
-				$this->set('id', $entry_id);
+				if (is_null($entry_id)) return __ENTRY_FIELD_ERROR__;
 			}			
 			
-			if(!isset($this->_ParentCatalogue['sectionmanager'])) $SectionManager = new SectionManager($this->_engine);
-			else $SectionManager = $this->_ParentCatalogue['sectionmanager'];
-
+			$SectionManager = new SectionManager($this->_engine);
+			$EntryManager = new EntryManager($this->_engine);
+			
 			$section = $SectionManager->fetch($this->get('section_id'));		
 			$schema = $section->fetchFieldsSchema();
 
 			foreach($schema as $info){
 				$result = NULL;
 
-				$field = $this->_ParentCatalogue['entrymanager']->fieldManager->fetch($info['id']);
+				$field = $EntryManager->fieldManager->fetch($info['id']);
 				
 				if($ignore_missing_fields && !isset($data[$field->get('element_name')])) continue;
 				
@@ -148,7 +156,7 @@
 
 			// Failed to create entry, cleanup
 			if($status != __ENTRY_OK__ and !is_null($entry_id)) {
-				$this->_engine->Database->delete('tbl_entries', " `id` = '$entry_id' ");
+				Symphony::Database()->delete('tbl_entries', " `id` = '$entry_id' ");
 			}			
 			
 			return $status;
@@ -158,15 +166,14 @@
 			$this->_data[$field_id] = $data;
 		}
 		
-		function getData($field_id=NULL){
+		function getData($field_id=NULL, $asObject=false){
 			if(!$field_id) return $this->_data;
-			return $this->_data[$field_id];
+			return ($asObject == true ? (object)$this->_data[$field_id] : $this->_data[$field_id]);
 		}
 		
 		function findDefaultData(){
 			
-			if(!isset($this->_ParentCatalogue['sectionmanager'])) $SectionManager = new SectionManager($this->_engine);
-			else $SectionManager = $this->_ParentCatalogue['sectionmanager'];
+			$SectionManager = new SectionManager($this->_engine);
 			
 			$section = $SectionManager->fetch($this->get('section_id'));		
 			$schema = $section->fetchFields();
@@ -186,7 +193,8 @@
 		
 		function commit(){
 			$this->findDefaultData();
-			return ($this->get('id') ? $this->_ParentCatalogue['entrymanager']->edit($this) : $this->_ParentCatalogue['entrymanager']->add($this));	
+			$EntryManager = new EntryManager($this->_engine);
+			return ($this->get('id') ? $EntryManager->edit($this) : $EntryManager->add($this));	
 		}
 		
 	}

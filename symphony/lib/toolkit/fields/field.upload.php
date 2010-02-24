@@ -89,7 +89,7 @@
 		public function displayPublishPanel(&$wrapper, $data=NULL, $flagWithError=NULL, $fieldnamePrefix=NULL, $fieldnamePostfix=NULL){
 
 			if(!is_dir(DOCROOT . $this->get('destination') . '/')){
-				$flagWithError = __('The destination directory, <code>%s</code>, does not exists.', array($this->get('destination')));
+				$flagWithError = __('The destination directory, <code>%s</code>, does not exist.', array($this->get('destination')));
 			}
 			
 			elseif(!$flagWithError && !is_writable(DOCROOT . $this->get('destination') . '/')){
@@ -130,7 +130,7 @@
 		public function checkFields(&$errors, $checkForDuplicates=true){
 
 			if(!is_dir(DOCROOT . $this->get('destination') . '/')){
-				$errors['destination'] = __('Directory <code>%s</code> does not exists.', array($this->get('destination')));
+				$errors['destination'] = __('Directory <code>%s</code> does not exist.', array($this->get('destination')));
 			}
 
 			elseif(!is_writable(DOCROOT . $this->get('destination') . '/')){
@@ -154,8 +154,8 @@
 			$fields['destination'] = $this->get('destination');
 			$fields['validator'] = ($fields['validator'] == 'custom' ? NULL : $this->get('validator'));
 			
-			$this->_engine->Database->query("DELETE FROM `tbl_fields_".$this->handle()."` WHERE `field_id` = '$id' LIMIT 1");		
-			return $this->_engine->Database->insert($fields, 'tbl_fields_' . $this->handle());
+			Symphony::Database()->query("DELETE FROM `tbl_fields_".$this->handle()."` WHERE `field_id` = '$id' LIMIT 1");		
+			return Symphony::Database()->insert($fields, 'tbl_fields_' . $this->handle());
 					
 		}		
 		
@@ -285,7 +285,7 @@
 
 
 			if(!is_dir(DOCROOT . $this->get('destination') . '/')){
-				$message = __('The destination directory, <code>%s</code>, does not exists.', array($this->get('destination')));
+				$message = __('The destination directory, <code>%s</code>, does not exist.', array($this->get('destination')));
 				return self::__ERROR__;
 			}
 
@@ -303,7 +303,7 @@
 						break;
 						
 					case UPLOAD_ERR_FORM_SIZE:
-						$message = __('File chosen in "%1$s" exceeds the maximum allowed upload size of %2$s, specified by Symphony.', array($this->get('label'), General::formatFilesize($this->_engine->Configuration->get('max_upload_size', 'admin'))));
+						$message = __('File chosen in "%1$s" exceeds the maximum allowed upload size of %2$s, specified by Symphony.', array($this->get('label'), General::formatFilesize(Symphony::Configuration()->get('max_upload_size', 'admin'))));
 						break;
 
 					case UPLOAD_ERR_PARTIAL:
@@ -347,10 +347,10 @@
 			
 			if($entry_id){
 				$row = $this->Database->fetchRow(0, "SELECT * FROM `tbl_entries_data_".$this->get('id')."` WHERE `entry_id` = '$entry_id' LIMIT 1");
-				$existing_file = $abs_path . '/' . trim($row['file'], '/');
+				$existing_file = $abs_path . '/' . basename($row['file'], '/');
 			}
 			
-			if(($existing_file != $new_file) && file_exists($new_file)){
+			if((strtolower($existing_file) != strtolower($new_file)) && file_exists($new_file)){
 				$message = __('A file with the name %1$s already exists in %2$s. Please rename the file first, or choose another.', array($data['name'], $this->get('destination')));
 				return self::__INVALID_FIELDS__;				
 			}
@@ -390,23 +390,25 @@
 			$abs_path = DOCROOT . '/' . trim($this->get('destination'), '/');
 			$rel_path = str_replace('/workspace', '', $this->get('destination'));
 
-			if(!General::uploadFile($abs_path, $data['name'], $data['tmp_name'], $this->_engine->Configuration->get('write_mode', 'file'))){
+			if(!General::uploadFile($abs_path, $data['name'], $data['tmp_name'], Symphony::Configuration()->get('write_mode', 'file'))){
 				
 				$message = __('There was an error while trying to upload the file <code>%1$s</code> to the target directory <code>%2$s</code>.', array($data['name'], 'workspace/'.ltrim($rel_path, '/')));
 				$status = self::__ERROR_CUSTOM__;
 				return;
 			}
 
-			if($entry_id){
-				$row = $this->Database->fetchRow(0, "SELECT * FROM `tbl_entries_data_".$this->get('id')."` WHERE `entry_id` = '$entry_id' LIMIT 1");
-				$existing_file = $abs_path . '/' . basename($row['file']);
-
-				General::deleteFile($existing_file);
-			}
-
 			$status = self::__OK__;
 			
 			$file = rtrim($rel_path, '/') . '/' . trim($data['name'], '/');
+
+			if($entry_id){
+				$row = $this->Database->fetchRow(0, "SELECT * FROM `tbl_entries_data_".$this->get('id')."` WHERE `entry_id` = '$entry_id' LIMIT 1");
+				$existing_file = rtrim($rel_path, '/') . '/' . trim(basename($row['file']), '/');
+
+				if((strtolower($existing_file) != strtolower($file)) && file_exists(WORKSPACE . $existing_file)){
+					General::deleteFile(WORKSPACE . $existing_file);
+				}
+			}
 
 			## If browser doesn't send MIME type (e.g. .flv in Safari)
 			if (strlen(trim($data['type'])) == 0){
@@ -424,6 +426,8 @@
 		
 		private static function __sniffMIMEType($file){
 			
+			$ext = strtolower(General::getExtension($file));
+			
 			$imageMimeTypes = array(
 				'image/gif',
 				'image/jpg',
@@ -431,7 +435,7 @@
 				'image/png',
 			);
 			
-			if(in_array('image/' . General::getExtension($file), $imageMimeTypes)) return 'image/' . General::getExtension($file);
+			if(General::in_iarray("image/{$ext}", $imageMimeTypes)) return "image/{$ext}";
 			
 			return 'unknown';
 		}
@@ -449,7 +453,7 @@
 			
 			$meta['creation'] = DateTimeObj::get('c', filemtime($file));
 			
-			if(in_array($type, $imageMimeTypes) && $array = @getimagesize($file)){
+			if(General::in_iarray($type, $imageMimeTypes) && $array = @getimagesize($file)){
 				$meta['width']    = $array[0];
 				$meta['height']   = $array[1];
 			}
@@ -461,7 +465,7 @@
 
 		function createTable(){
 			
-			return $this->_engine->Database->query(
+			return Symphony::Database()->query(
 			
 				"CREATE TABLE IF NOT EXISTS `tbl_entries_data_" . $this->get('id') . "` (
 				  `id` int(11) unsigned NOT NULL auto_increment,

@@ -9,7 +9,7 @@
 	    error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 	} 
 	else{
-	    error_reporting(E_ALL ^ E_NOTICE);
+	    error_reporting(E_ALL & ~E_NOTICE);
 	}
 	
 	set_magic_quotes_runtime(0);
@@ -21,7 +21,6 @@
 		
 	require_once(DOCROOT . '/symphony/lib/boot/func.utilities.php');	
 	require_once(DOCROOT . '/symphony/lib/boot/defines.php');
-	require_once(BOOT . '/class.object.php');
 	
 	if (!file_exists(CONFIG)) {
 		

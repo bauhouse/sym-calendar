@@ -148,7 +148,7 @@
 			
 			if($isEditing){
 				$button = new XMLElement('button', __('Delete'));
-				$button->setAttributeArray(array('name' => 'action[delete]', 'class' => 'confirm delete', 'title' => __('Delete this event')));
+				$button->setAttributeArray(array('name' => 'action[delete]', 'class' => 'confirm delete', 'title' => __('Delete this event'), 'type' => 'submit'));
 				$div->appendChild($button);
 			}
 			
@@ -297,13 +297,14 @@
 				
 				$documentation_parts[] = new XMLElement('p', __('This is an example of the form markup you can use on your frontend:'));				
 				$container = new XMLElement('form', NULL, array('method' => 'post', 'action' => '', 'enctype' => 'multipart/form-data'));
-				$container->appendChild(Widget::Input('MAX_FILE_SIZE', $this->_Parent->Configuration->get('max_upload_size', 'admin'), 'hidden'));
+				$container->appendChild(Widget::Input('MAX_FILE_SIZE', Symphony::Configuration()->get('max_upload_size', 'admin'), 'hidden'));
 
 				$sectionManager = new SectionManager($this->_Parent);
 				$section = $sectionManager->fetch($fields['source']);
 				$markup = NULL;
 				foreach($section->fetchFields() as $f){
-					$container->appendChild($f->getExampleFormMarkup());
+					if ($f->getExampleFormMarkup() instanceof XMLElement)
+						$container->appendChild($f->getExampleFormMarkup());
 				}
 				$container->appendChild(Widget::Input('action['.$rootelement.']', __('Submit'), 'submit'));
 				
@@ -326,7 +327,8 @@
 					$documentation_parts[] = new XMLElement('p', __('The send email filter, upon the event successfully saving the entry, takes input from the form and send an email to the desired recipient. <b>This filter currently does not work with the "Allow Multiple" option.</b> The following are the recognised fields:'));
 
 					$documentation_parts[] = self::processDocumentationCode(
-						'send-email[from]'.self::CRLF.
+						'send-email[sender-email] // '.__('Optional').self::CRLF.
+						'send-email[sender-name] // '.__('Optional').self::CRLF.						
 						'send-email[subject] // '.__('Optional').self::CRLF.
 						'send-email[body]'.self::CRLF.
 						'send-email[recipient] // '.__('list of comma author usernames.'));
@@ -338,7 +340,8 @@
 		<label>'.__('Name').' <input type="text" name="fields[author]" value="" /></label>
 		<label>'.__('Email').' <input type="text" name="fields[email]" value="" /></label>
 		<label>'.__('Message').' <textarea name="fields[message]" rows="5" cols="21"></textarea></label>
-		<input name="send-email[from]" value="fields[email]" type="hidden" />
+		<input name="send-email[sender-email]" value="fields[email]" type="hidden" />
+		<input name="send-email[sender-name]" value="fields[author]" type="hidden" />		
 		<input name="send-email[subject]" value="You are being contacted" type="hidden" />
 		<input name="send-email[body]" value="fields[message]" type="hidden" />
 		<input name="send-email[recipient]" value="fred" type="hidden" />
@@ -365,7 +368,7 @@
 				$eventShell = preg_replace(array('/<!--[\w ]++-->/'), '', $eventShell);	
 
 				##Write the file
-				if(!is_writable(dirname($file)) || !$write = General::writeFile($file, $eventShell, $this->_Parent->Configuration->get('write_mode', 'file')))
+				if(!is_writable(dirname($file)) || !$write = General::writeFile($file, $eventShell, Symphony::Configuration()->get('write_mode', 'file')))
 					$this->pageAlert(__('Failed to write Event to <code>%s</code>. Please check permissions.', array(EVENTS)), Alert::ERROR);
 
 				##Write Successful, add record to the database
@@ -375,14 +378,14 @@
 						General::deleteFile($queueForDeletion);
 									
 						$sql = "SELECT * FROM `tbl_pages` WHERE `events` REGEXP '[[:<:]]".$existing_handle."[[:>:]]' ";
-						$pages = $this->_Parent->Database->fetch($sql);
+						$pages = Symphony::Database()->fetch($sql);
 
 						if(is_array($pages) && !empty($pages)){
 							foreach($pages as $page){
 								
 								$page['events'] = preg_replace('/\b'.$existing_handle.'\b/i', $classname, $page['events']);
 								
-								$this->_Parent->Database->update($page, 'tbl_pages', "`id` = '".$page['id']."'");
+								Symphony::Database()->update($page, 'tbl_pages', "`id` = '".$page['id']."'");
 							}
 						}						
 						

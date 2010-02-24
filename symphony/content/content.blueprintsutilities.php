@@ -143,7 +143,7 @@
 			
 			if($this->_context[0] == 'edit'){
 				$button = new XMLElement('button', __('Delete'));
-				$button->setAttributeArray(array('name' => 'action[delete]', 'class' => 'confirm delete', 'title' => __('Delete this utility')));
+				$button->setAttributeArray(array('name' => 'action[delete]', 'class' => 'confirm delete', 'title' => __('Delete this utility'), 'type' => 'submit'));
 				$div->appendChild($button);
 			}
 			
@@ -182,7 +182,7 @@
 					elseif($this->_context[0] == 'new' && is_file($file)) $this->_errors['name'] = __('A Utility with that name already exists. Please choose another.'); 
 
 					##Write the file	
-					elseif(!$write = General::writeFile($file, $fields['body'], $this->_Parent->Configuration->get('write_mode', 'file')))
+					elseif(!$write = General::writeFile($file, $fields['body'], Symphony::Configuration()->get('write_mode', 'file')))
 						$this->pageAlert(__('Utility could not be written to disk. Please check permissions on <code>/workspace/utilities</code>.'), Alert::ERROR);
 
 					##Write Successful, add record to the database

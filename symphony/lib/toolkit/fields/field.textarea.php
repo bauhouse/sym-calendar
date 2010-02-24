@@ -1,7 +1,5 @@
 <?php
 
-	
-	
 	Class fieldTextarea extends Field {
 		function __construct(&$parent){
 			
@@ -55,8 +53,8 @@
 			if($this->get('formatter') != 'none') $fields['formatter'] = $this->get('formatter');
 			$fields['size'] = $this->get('size');
 			
-			$this->_engine->Database->query("DELETE FROM `tbl_fields_".$this->handle()."` WHERE `field_id` = '$id' LIMIT 1");		
-			return $this->_engine->Database->insert($fields, 'tbl_fields_' . $this->handle());
+			Symphony::Database()->query("DELETE FROM `tbl_fields_".$this->handle()."` WHERE `field_id` = '$id' LIMIT 1");		
+			return Symphony::Database()->insert($fields, 'tbl_fields_' . $this->handle());
 					
 		}
 		
@@ -101,15 +99,8 @@
 				$message = __("'%s' is a required field.", array($this->get('label')));
 				return self::__MISSING_FIELDS__;
 			}	
-			
-			if(empty($data)) self::__OK__;
-			
-			$formatted = $this->applyFormatting($data);
-			
-			include_once(TOOLKIT . '/class.xsltprocess.php');
-			$xsltProc =& new XsltProcess;	
-			
-			if(!General::validateXML(($formatted ? $formatted : General::sanitize($data)), $errors, false, $xsltProc)){
+
+			if($this->__applyFormatting($data, true, $errors) === false){
 				$message = __('"%1$s" contains invalid XML. The following error was returned: <code>%2$s</code>', array($this->get('label'), $errors[0]['message']));
 				return self::__INVALID_FIELDS__;
 			}
@@ -125,33 +116,50 @@
 				'value' => $data
 			);
 			
-			if ($formatted = $this->applyFormatting($data)) {
-				$result['value_formatted'] = $formatted;
-				
-			} else {
-				$result['value_formatted'] = General::sanitize($data);
+			$result['value_formatted'] = $this->__applyFormatting($data, true, $errors);
+			if($result['value_formatted'] === false){
+				//run the formatter again, but this time do not validate. We will sanitize the output
+				$result['value_formatted'] = General::sanitize($this->__applyFormatting($data));	
 			}
 			
 			return $result;
 		}
 
-		function applyFormatting($data){
+		protected function __applyFormatting($data, $validate=false, &$errors=NULL){
 	
 			if($this->get('formatter')){
 
-				if(isset($this->_ParentCatalogue['entrymanager'])) $tfm = $this->_ParentCatalogue['entrymanager']->formatterManager;
-				else $tfm = new TextformatterManager($this->_engine);
+				$tfm = new TextformatterManager($this->_engine);
 				
 				$formatter = $tfm->create($this->get('formatter'));
 
-				return $formatter->run($data);
-
+				$result = $formatter->run($data);
+				
 			}	
-			
-			return NULL;		
+
+			if($validate === true){
+
+				include_once(TOOLKIT . '/class.xsltprocess.php');
+
+				if(!General::validateXML($result, $errors, false, new XsltProcess)){
+					$result = html_entity_decode($result, ENT_QUOTES, 'UTF-8');
+					$result = $this->__replaceAmpersands($result);
+
+					if(!General::validateXML($result, $errors, false, new XsltProcess)){
+
+						$result = $formatter->run(General::sanitize($data));
+					
+						if(!General::validateXML($result, $errors, false, new XsltProcess)){
+							return false;
+						}
+					}
+				}
+			}
+
+			return $result;		
 		}
 		
-		private function replaceAmpersands($value) {
+		private function __replaceAmpersands($value) {
 			return preg_replace('/&(?!(#[0-9]+|#x[0-9a-f]+|amp|lt|gt);)/i', '&amp;', trim($value));
 		}
 		
@@ -167,11 +175,7 @@
 					$value = $data['value'];
 				}
 
-				$value = $this->replaceAmpersands($value);
-				
-				$attributes = array(
-					'word-count' => General::countWords($value)
-				);
+				$value = $this->__replaceAmpersands($value);
 				
 				if ($mode == 'formatted') $attributes['mode'] = $mode;
 				
@@ -183,16 +187,15 @@
 					)
 				);
 				
-			} elseif ($mode == 'unformatted') {
+			}
 				
-				$value = $this->replaceAmpersands($data['value']);
+			elseif ($mode == 'unformatted') {
 
 				$wrapper->appendChild(
 					new XMLElement(
 						$this->get('element_name'),
-						($encode ? General::sanitize($value) : $value),
+						sprintf('<![CDATA[%s]]>', $data['value']),
 						array(
-							'word-count' => General::countWords($value),
 							'mode' => $mode
 						)
 					)
@@ -239,7 +242,7 @@
 		
 		function createTable(){
 			
-			return $this->_engine->Database->query(
+			return Symphony::Database()->query(
 			
 				"CREATE TABLE IF NOT EXISTS `tbl_entries_data_" . $this->get('id') . "` (
 				  `id` int(11) unsigned NOT NULL auto_increment,

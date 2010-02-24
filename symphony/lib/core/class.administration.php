@@ -23,12 +23,16 @@
 		protected function __construct(){
 			parent::__construct();
 			$this->Profiler->sample('Engine Initialisation');
-
+			
+			// Need this part for backwards compatiblity			
+			$this->Database = Symphony::Database();
+			$this->Configuration = Symphony::Configuration();
+						
 			$this->_callback = NULL;
 		}
 		
 		public function isLoggedIn(){
-			if($_REQUEST['auth-token'] && in_array(strlen($_REQUEST['auth-token']), array(6, 8))) return $this->loginFromToken($_REQUEST['auth-token']);
+			if (isset($_REQUEST['auth-token']) && $_REQUEST['auth-token'] && in_array(strlen($_REQUEST['auth-token']), array(6, 8))) return $this->loginFromToken($_REQUEST['auth-token']);
 			
 			return parent::isLoggedIn();
 		}
@@ -52,12 +56,12 @@
 					if(!$section_handle){
 						
 						if($this->Author->isDeveloper()) redirect(URL . '/symphony/blueprints/sections/');
-						else redirect(URL);
+						else redirect(URL . "/symphony/system/authors/edit/".$this->Author->get('id')."/");
 						
 					}
 				
 					else{
-						redirect(URL . '/symphony/publish/' . $section_handle . '/');
+						redirect(URL . "/symphony/publish/{$section_handle}/");
 					}
 				
 				endif;
@@ -203,7 +207,7 @@
 			# Delegate: AdminPagePreGenerate
 			# Description: Immediately before generating the admin page. Provided with the page object
 			# Global: Yes
-			$this->ExtensionManager->notifyMembers('AdminPagePreGenerate', '/administration/', array('oPage' => &$this->Page));
+			$this->ExtensionManager->notifyMembers('AdminPagePreGenerate', '/backend/', array('oPage' => &$this->Page));
 			
 			$output = $this->Page->generate();
 
@@ -211,7 +215,7 @@
 			# Delegate: AdminPagePostGenerate
 			# Description: Immediately after generating the admin page. Provided with string containing page source
 			# Global: Yes
-			$this->ExtensionManager->notifyMembers('AdminPagePostGenerate', '/administration/', array('output' => &$output));
+			$this->ExtensionManager->notifyMembers('AdminPagePostGenerate', '/backend/', array('output' => &$output));
 
 			$this->Profiler->sample('Page built');
 			

@@ -1,6 +1,6 @@
 <?php
 	
-	Class Field extends Object{
+	Class Field{
 		protected $_key = 0;
 		protected $_fields;
 		protected $_Parent;
@@ -32,17 +32,13 @@
 			
 			$this->_handle = (strtolower(get_class($this)) == 'field' ? 'field' : strtolower(substr(get_class($this), 5)));
 
-			## Since we are not sure where the Admin object is, inspect
-			## all the parent objects
-			$this->catalogueParentObjects();
-
 			if(class_exists('Administration')) $this->_engine = Administration::instance();
 			elseif(class_exists('Frontend')) $this->_engine = Frontend::instance();
 			else trigger_error(__('No suitable engine object found'), E_USER_ERROR);
 			
-			$this->creationDate = DateTimeObj::getGMT('c'); //$this->_engine->getDateObj();
+			$this->creationDate = DateTimeObj::getGMT('c');
 			
-			$this->Database = $this->_engine->Database;
+			$this->Database = Symphony::Database();
 
 		}
 		
@@ -116,6 +112,8 @@
 		public function get($field=NULL){
 			if(!$field) return $this->_fields;
 			
+			if (!isset($this->_fields[$field])) return null;
+			
 			return $this->_fields[$field];
 		}
 		
@@ -157,7 +155,7 @@
 			return false;
 		}
 		
-		public function appendFormattedElement(&$wrapper, $data, $encode = false, $mode = null) {
+		public function appendFormattedElement(&$wrapper, $data, $encode=false, $mode=NULL, $entry_id=NULL) {
 			$wrapper->appendChild(new XMLElement($this->get('element_name'), ($encode ? General::sanitize($this->prepareTableValue($data)) : $this->prepareTableValue($data))));
 		}
 		
@@ -311,7 +309,7 @@
 		}
 		
 		public function prepareTableValue($data, XMLElement $link=NULL) {
-			$max_length = $this->_engine->Configuration->get('cell_truncation_length', 'symphony');
+			$max_length = Symphony::Configuration()->get('cell_truncation_length', 'symphony');
 			$max_length = ($max_length ? $max_length : 75);
 			
 			$value = strip_tags($data['value']);

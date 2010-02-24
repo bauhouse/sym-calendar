@@ -1,4 +1,31 @@
 <?php
+
+	Class DatabaseException extends Exception{
+		
+		/*
+			Array
+			(
+			    [query] => 
+			    [msg] => Access denied for user 'rdoot'@'localhost' (using password: YES)
+			    [num] => 1045
+			)
+		*/
+		
+		private $_error;
+		public function __construct($message, array $error=NULL){
+			parent::__construct($message);
+			$this->_error = $error;
+		}
+		public function getQuery(){
+			return $this->_error['query'];
+		}
+		public function getDatabaseErrorMessage(){
+			return $this->_error['msg'];
+		}		
+		public function getDatabaseErrorCode(){
+			return $this->_error['num'];
+		}		
+	}
 	
 	Class MySQL {
 			
@@ -124,7 +151,7 @@
 	        return true;
 	    }
 		
-		public function cleanValue($value) {
+		public static function cleanValue($value) {
 			if (function_exists('mysql_real_escape_string')) {
 				return mysql_real_escape_string($value);
 				
@@ -133,70 +160,40 @@
 			}
 		}
 		
-		public function cleanFields(&$array){
-			foreach($array as $key => $val){				
-				if($val == '') $array[$key] = 'NULL';				
-				else $array[$key] = "'".(function_exists('mysql_real_escape_string') ? mysql_real_escape_string($val) : addslashes($val))."'";
+		public static function cleanFields(array &$array){
+			foreach($array as $key => $val){
+				
+				// Handle arrays with more than 1 level
+				if(is_array($val)){
+					self::cleanFields($val);
+					continue;
+				}	
+						
+				elseif(strlen($val) == 0){
+					$array[$key] = 'NULL';
+				}
+				
+				else{
+					$array[$key] = "'" . (function_exists('mysql_real_escape_string') 
+											? mysql_real_escape_string($val) 
+											: addslashes($val)) . "'";
+				}
 			}
 		}
 		
-		public function insert($fields, $table, $updateOnDuplicate=false){
-	
-		/*
+		public function insert(array $fields, $table, $updateOnDuplicate=false){
 
-			$result = true;
-
-			if(is_array(current($fields))){
-				foreach($fields as $key => $array){
-
-					if($updateOnDuplicate) 
-						if(!$this->insert($array, $table, $updateOnDuplicate)) return false;
-
-					else{
-
-						$sql  = "INSERT INTO `$table` (`".implode('`, `', array_keys(current($fields))).'`) VALUES ';
-
-						foreach($fields as $key => $array){
-							$this->cleanFields($array);
-							$rows[] = '('.implode(', ', $array).')';
-						}
-
-						$sql .= implode(", ", $rows);
-
-					}					
-
-				}
-
-			}
-
-			else{
-				$this->cleanFields($fields);
-				$sql  = "INSERT INTO `$table` (`".implode('`, `', array_keys($fields)).'`) VALUES ('.implode(', ', $fields).')';
-
-				if($updateOnDuplicate){
-
-					$sql .= ' ON DUPLICATE KEY UPDATE ';
-
-					foreach($fields as $key => $value) $sql .= " `$key` = $value,";
-
-					$sql = trim($sql, ',');
-
-				}
-
-			}
-
-			return $this->query($sql);
-
-
-		*/		
-	
 			// Multiple Insert
 			if(is_array(current($fields))){
 
 				$sql  = "INSERT INTO `$table` (`".implode('`, `', array_keys(current($fields))).'`) VALUES ';
 				
 				foreach($fields as $key => $array){
-					$this->cleanFields($array);
+					
+					// Sanity check: Make sure we dont end up with ',()' in the SQL.
+					if(!is_array($array)) continue;
+					
+					self::cleanFields($array);
 					$rows[] = '('.implode(', ', $array).')';
 				}
 				
@@ -206,9 +203,9 @@
 			
 			// Single Insert
 			else{
-				$this->cleanFields($fields);
+				self::cleanFields($fields);
 				$sql  = "INSERT INTO `$table` (`".implode('`, `', array_keys($fields)).'`) VALUES ('.implode(', ', $fields).')';
-				
+
 				if($updateOnDuplicate){
 					
 					$sql .= ' ON DUPLICATE KEY UPDATE ';
@@ -223,7 +220,7 @@
 		}
 		
 		public function update($fields, $table, $where=NULL){
-			$this->cleanFields($fields);
+			self::cleanFields($fields);
 			$sql = "UPDATE $table SET ";
 			
 			foreach($fields as $key => $val)
@@ -263,7 +260,7 @@
 	            $query = preg_replace('/tbl_(\S+?)([\s\.,]|$)/', $this->_connection['tbl_prefix'].'\\1\\2', $query);
 	        }
 
-			$query_hash = md5($query.time());
+			$query_hash = md5($query.microtime());
 			
 			$this->_log['query'][$query_hash] = array('query' => $query, 'start' => precision_timer());
 
@@ -278,22 +275,14 @@
 	            $this->__error();
 	            return false;
 	        }
-
-	        while ($row = @mysql_fetch_object($this->_result)){	            
-	            @array_push($this->_lastResult, $row);
-	        }
-				
-	        if($query_type == self::__WRITE_OPERATION__){
-					
-	            $this->_affectedRows = @mysql_affected_rows();
-					
-	            if(stristr($query, 'insert') || stristr($query, 'replace')){
-	                $this->_insertID = @mysql_insert_id($this->_connection['id']);
-	            }
-						
-	        }
-				
-	        @mysql_free_result($this->_result);
+	
+			if(is_resource($this->_result)){
+		        while ($row = @mysql_fetch_object($this->_result)){	            
+		            @array_push($this->_lastResult, $row);
+		        }
+		
+		        @mysql_free_result($this->_result);
+			}
 			
 			$this->_log['query'][$query_hash]['time'] = precision_timer('stop', $this->_log['query'][$query_hash]['start']);
 			if($this->_logEverything) $this->_log['query'][$query_hash]['lastResult'] = $this->_lastResult;
@@ -312,7 +301,7 @@
 	    }
 			
 	    public function getInsertID(){
-	        return $this->_insertID;
+	        return @mysql_insert_id($this->_connection['id']);
 	    }
 	
 		public function queryCount(){
@@ -394,11 +383,11 @@
 	            $errornum = @mysql_errno();
 	        }
 				
-	        $this->_log['error'][] = array ('query' => $this->_lastQuery,
+	        $this->_log['error'][] = array('query' => $this->_lastQuery,
 	                               			'msg' => $msg,
 	                               			'num' => $errornum);
 
-			trigger_error(__('MySQL Error (%1$s): %2$s in query "%3$s"', array($errornum, $msg, $this->_lastQuery)), E_USER_WARNING);
+			throw new DatabaseException(__('MySQL Error (%1$s): %2$s in query "%3$s"', array($errornum, $msg, $this->_lastQuery)), end($this->_log['error']));
 	    }
 			
 	    public function debug($section=NULL){			
@@ -408,7 +397,6 @@
 	    }
 	
 		public function getLastError(){
-			@rewind($this->_log['error']);
 			return current($this->_log['error']);
 		}
 		

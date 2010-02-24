@@ -3,7 +3,6 @@
 	require_once(TOOLKIT . '/class.administrationpage.php');
 	require_once(TOOLKIT . '/class.entrymanager.php');
 	require_once(TOOLKIT . '/class.sectionmanager.php');
-	require_once(TOOLKIT . '/class.authormanager.php');	
 	
 	Class contentPublish extends AdministrationPage{
 		
@@ -50,11 +49,11 @@
 
 			$this->setPageType('table');
 			$this->setTitle(__('%1$s &ndash; %2$s', array(__('Symphony'), $section->get('name'))));
+			$this->Form->setAttribute("class", $this->_context['section_handle']);
 
 			$entryManager = new EntryManager($this->_Parent);
 
-		    $authorManager = new AuthorManager($this->_Parent);
-		    $authors = $authorManager->fetch();
+		    $authors = AuthorManager::fetch();
 		
 			$filter = $filter_value = $where = $joins = NULL;		
 			$current_page = (isset($_REQUEST['pg']) && is_numeric($_REQUEST['pg']) ? max(1, intval($_REQUEST['pg'])) : 1);
@@ -69,7 +68,7 @@
 
 					$filter_value = rawurldecode($filter_value);
 
-					$filter = $this->_Parent->Database->fetchVar('id', 0, "SELECT `f`.`id` 
+					$filter = Symphony::Database()->fetchVar('id', 0, "SELECT `f`.`id` 
 																			   FROM `tbl_fields` AS `f`, `tbl_sections` AS `s` 
 																			   WHERE `s`.`id` = `f`.`parent_section` 
 																			   AND f.`element_name` = '$field_name' 
@@ -122,7 +121,7 @@
 				$entryManager->setFetchSortingDirection('DESC');
 			}
 			
-			$entries = $entryManager->fetchByPage($current_page, $section_id, $this->_Parent->Configuration->get('pagination_maximum_rows', 'symphony'), $where, $joins);
+			$entries = $entryManager->fetchByPage($current_page, $section_id, Symphony::Configuration()->get('pagination_maximum_rows', 'symphony'), $where, $joins);
 			
 			$aTableHead = array();
 			
@@ -181,8 +180,10 @@
 
 
 				$field_pool = array();
-				foreach($visible_columns as $column){
-					$field_pool[$column->get('id')] = $column;
+				if(is_array($visible_columns) && !empty($visible_columns)){
+					foreach($visible_columns as $column){
+						$field_pool[$column->get('id')] = $column;
+					}
 				}
 
 				foreach($entries['records'] as $entry){
@@ -209,7 +210,7 @@
 							
 							$value = $field->prepareTableValue($data, ($position == 0 ? $link : null), $entry->get('id'));
 							
-							if (trim($value) == '') {
+							if (!is_object($value) && strlen(trim($value)) == 0) {
 								$value = ($position == 0 ? $link->generate() : __('None'));
 							}
 							
@@ -416,7 +417,7 @@
 			$this->Form->setAttribute('enctype', 'multipart/form-data');
 			$this->setTitle(__('%1$s &ndash; %2$s', array(__('Symphony'), $section->get('name'))));
 			$this->appendSubheading(__('Untitled'));
-			$this->Form->appendChild(Widget::Input('MAX_FILE_SIZE', $this->_Parent->Configuration->get('max_upload_size', 'admin'), 'hidden'));
+			$this->Form->appendChild(Widget::Input('MAX_FILE_SIZE', Symphony::Configuration()->get('max_upload_size', 'admin'), 'hidden'));
 			
 			$entryManager = new EntryManager($this->_Parent);
 			
@@ -461,7 +462,7 @@
 			
 			if ((!is_array($main_fields) || empty($main_fields)) && (!is_array($sidebar_fields) || empty($sidebar_fields))) {
 				$primary->appendChild(new XMLElement('p', __(
-					'It looks like your trying to create an entry. Perhaps you want fields first? <a href="%s">Click here to create some.</a>',
+					'It looks like you\'re trying to create an entry. Perhaps you want fields first? <a href="%s">Click here to create some.</a>',
 					array(
 						URL . '/symphony/blueprints/sections/edit/' . $section->get('id') . '/'
 					)
@@ -621,6 +622,11 @@
 					$section = $sectionManager->fetch($entry->get('section_id'));
 				}
 			}
+			
+			###
+			# Delegate: EntryPreRender
+			# Description: Just prior to rendering of an Entry edit form. Entry object can be modified.
+			$this->_Parent->ExtensionManager->notifyMembers('EntryPreRender', '/publish/edit/', array('section' => $section, 'entry' => &$entry, 'fields' => $fields));
 
 			if(isset($this->_context['flag'])){
 				
@@ -628,7 +634,15 @@
 				
 				list($flag, $field_id, $value) = preg_split('/:/i', $this->_context['flag'], 3);
 				
-				if(is_numeric($field_id) && $value) $link .= "?prepopulate[$field_id]=$value";
+				if(is_numeric($field_id) && $value){
+					$link .= "?prepopulate[$field_id]=$value";
+
+					$this->Form->prependChild(Widget::Input(
+						"prepopulate[{$field_id}]",
+						rawurlencode($value),
+						'hidden'
+					));
+				}
 				
 				switch($flag){
 					
@@ -664,7 +678,7 @@
 			}
 
 			### Determine the page title
-			$field_id = $this->_Parent->Database->fetchVar('id', 0, "SELECT `id` FROM `tbl_fields` WHERE `parent_section` = '".$section->get('id')."' ORDER BY `sortorder` LIMIT 1");
+			$field_id = Symphony::Database()->fetchVar('id', 0, "SELECT `id` FROM `tbl_fields` WHERE `parent_section` = '".$section->get('id')."' ORDER BY `sortorder` LIMIT 1");
 			$field = $entryManager->fieldManager->fetch($field_id);
 
 			$title = trim(strip_tags($field->prepareTableValue($existingEntry->getData($field->get('id')), NULL, $entry_id)));
@@ -672,12 +686,24 @@
 			if (trim($title) == '') {
 				$title = 'Untitled';
 			}
+			
+			// Check if there is a field to prepopulate
+			if (isset($_REQUEST['prepopulate'])) {
+				$field_id = array_shift(array_keys($_REQUEST['prepopulate']));
+				$value = stripslashes(rawurldecode(array_shift($_REQUEST['prepopulate'])));
+
+				$this->Form->prependChild(Widget::Input(
+					"prepopulate[{$field_id}]",
+					rawurlencode($value),
+					'hidden'
+				));
+			}
 
 			$this->setPageType('form');
 			$this->Form->setAttribute('enctype', 'multipart/form-data');
 			$this->setTitle(__('%1$s &ndash; %2$s &ndash; %3$s', array(__('Symphony'), $section->get('name'), $title)));
 			$this->appendSubheading($title);
-			$this->Form->appendChild(Widget::Input('MAX_FILE_SIZE', $this->_Parent->Configuration->get('max_upload_size', 'admin'), 'hidden'));
+			$this->Form->appendChild(Widget::Input('MAX_FILE_SIZE', Symphony::Configuration()->get('max_upload_size', 'admin'), 'hidden'));
 			
 			###
 
@@ -688,7 +714,7 @@
 			$main_fields = $section->fetchFields(NULL, 'main');
 
 			if((!is_array($main_fields) || empty($main_fields)) && (!is_array($sidebar_fields) || empty($sidebar_fields))){
-				$primary->appendChild(new XMLElement('p', __('It looks like your trying to create an entry. Perhaps you want custom fields first? <a href="%s">Click here to create some.</a>', array(URL . '/symphony/blueprints/sections/edit/'. $section->get('id') . '/'))));
+				$primary->appendChild(new XMLElement('p', __('It looks like your trying to create an entry. Perhaps you want fields first? <a href="%s">Click here to create some.</a>', array(URL . '/symphony/blueprints/sections/edit/'. $section->get('id') . '/'))));
 			}
 
 			else{
@@ -719,7 +745,7 @@
 			$div->appendChild(Widget::Input('action[save]', __('Save Changes'), 'submit', array('accesskey' => 's')));
 			
 			$button = new XMLElement('button', __('Delete'));
-			$button->setAttributeArray(array('name' => 'action[delete]', 'class' => 'confirm delete', 'title' => __('Delete this entry')));
+			$button->setAttributeArray(array('name' => 'action[delete]', 'class' => 'confirm delete', 'title' => __('Delete this entry'), 'type' => 'submit'));
 			$div->appendChild($button);
 
 			$this->Form->appendChild($div);
@@ -740,30 +766,10 @@
 
 				$sectionManager = new SectionManager($this->_Parent);
 				$section = $sectionManager->fetch($entry->get('section_id'));
-
-				$fields = $_POST['fields'];
-
-				## Combine FILES and POST arrays, indexed by their custom field handles
-				if(isset($_FILES['fields'])){
-					$filedata = General::processFilePostData($_FILES['fields']);
-
-					foreach($filedata as $handle => $data){
-						if(!isset($fields[$handle])) $fields[$handle] = $data;
-						elseif(isset($data['error']) && $data['error'] == 4) $fields['handle'] = NULL;
-						else{
-
-							foreach($data as $ii => $d){
-								if(isset($d['error']) && $d['error'] == 4) $fields[$handle][$ii] = NULL;
-								elseif(is_array($d) && !empty($d)){
-
-									foreach($d as $key => $val)
-										$fields[$handle][$ii][$key] = $val;
-								}						
-							}
-						}
-					}
-				}
-
+				
+				$post = General::getPostData();
+				$fields = $post['fields'];
+				
 				if(__ENTRY_FIELD_ERROR__ == $entry->checkPostData($fields, $this->_errors)):
 					$this->pageAlert(__('Some errors were encountered while attempting to save.'), Alert::ERROR);
 
@@ -790,9 +796,24 @@
 						# Delegate: EntryPostEdit
 						# Description: Editing an entry. Entry object is provided.		
 						$this->_Parent->ExtensionManager->notifyMembers('EntryPostEdit', '/publish/edit/', array('section' => $section, 'entry' => $entry, 'fields' => $fields));
+						
+						
+						$prepopulate_field_id = $prepopulate_value = NULL;
+						if(isset($_POST['prepopulate'])){
+							$prepopulate_field_id = array_shift(array_keys($_POST['prepopulate']));
+							$prepopulate_value = stripslashes(rawurldecode(array_shift($_POST['prepopulate'])));
+						}
 
-
-			  		    redirect(URL . '/symphony/publish/' . $this->_context['section_handle'] . '/edit/' . $entry_id . '/saved/');
+			  		    //redirect(URL . '/symphony/publish/' . $this->_context['section_handle'] . '/edit/' . $entry_id . '/saved/');
+			
+			  		   	redirect(sprintf(
+							'%s/symphony/publish/%s/edit/%d/saved%s/',
+							URL,
+							$this->_context['section_handle'],
+							$entry->get('id'),
+							(!is_null($prepopulate_field_id) ? ":{$prepopulate_field_id}:{$prepopulate_value}" : NULL)
+						));
+			
 					}
 
 				endif;
@@ -800,11 +821,10 @@
 
 			elseif(@array_key_exists('delete', $_POST['action']) && is_numeric($entry_id)){
 
-				## TODO: Fix Me
 				###
 				# Delegate: Delete
-				# Description: Prior to deleting an entry. Entry ID is provided.
-				##$ExtensionManager->notifyMembers('Delete', getCurrentPage(), array('entry_id' => $entry_id));
+				# Description: Prior to deleting an entry. Entry ID is provided, as an array to remain compatible with other Delete delegate call
+				Administration::instance()->ExtensionManager->notifyMembers('Delete', '/publish/', array('entry_id' => $entry_id));
 
 				$entryManager = new EntryManager($this->_Parent);
 
