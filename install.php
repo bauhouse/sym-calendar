@@ -191,6 +191,10 @@
 	}	
 	
 	function getTableSchema(){
+		return file_get_contents('install.sql');
+	}
+
+	function getWorkspaceData(){
 		return file_get_contents('workspace/install.sql');
 	}
 		

@@ -2,12 +2,12 @@
 -- *** STRUCTURE: `tbl_fields_author` ***
 DROP TABLE IF EXISTS `tbl_fields_author`;
 CREATE TABLE `tbl_fields_author` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `field_id` int(11) unsigned NOT NULL default '0',
-  `allow_author_change` enum('yes','no') character set utf8 collate utf8_unicode_ci NOT NULL default 'yes',
-  `allow_multiple_selection` enum('yes','no') character set utf8 collate utf8_unicode_ci NOT NULL default 'no',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `allow_author_change` enum('yes','no') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
+  `allow_multiple_selection` enum('yes','no') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `default_to_current_user` enum('yes','no') NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -16,11 +16,11 @@ CREATE TABLE `tbl_fields_author` (
 -- *** STRUCTURE: `tbl_fields_checkbox` ***
 DROP TABLE IF EXISTS `tbl_fields_checkbox`;
 CREATE TABLE `tbl_fields_checkbox` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `field_id` int(11) unsigned NOT NULL default '0',
-  `default_state` enum('on','off') collate utf8_unicode_ci NOT NULL default 'on',
-  `description` varchar(255) collate utf8_unicode_ci default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `default_state` enum('on','off') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'on',
+  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -32,11 +32,11 @@ INSERT INTO `tbl_fields_checkbox` (`id`, `field_id`, `default_state`, `descripti
 -- *** STRUCTURE: `tbl_fields_date` ***
 DROP TABLE IF EXISTS `tbl_fields_date`;
 CREATE TABLE `tbl_fields_date` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `field_id` int(11) unsigned NOT NULL default '0',
-  `pre_populate` enum('yes','no') character set utf8 collate utf8_unicode_ci NOT NULL default 'no',
-  `calendar` enum('yes','no') character set utf8 collate utf8_unicode_ci NOT NULL default 'no',
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `pre_populate` enum('yes','no') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `calendar` enum('yes','no') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -45,10 +45,10 @@ CREATE TABLE `tbl_fields_date` (
 -- *** STRUCTURE: `tbl_fields_input` ***
 DROP TABLE IF EXISTS `tbl_fields_input`;
 CREATE TABLE `tbl_fields_input` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `field_id` int(11) unsigned NOT NULL default '0',
-  `validator` varchar(100) character set utf8 collate utf8_unicode_ci default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `validator` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
@@ -64,9 +64,9 @@ INSERT INTO `tbl_fields_input` (`id`, `field_id`, `validator`) VALUES (34, 14, N
 -- *** STRUCTURE: `tbl_fields_number` ***
 DROP TABLE IF EXISTS `tbl_fields_number`;
 CREATE TABLE `tbl_fields_number` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `field_id` int(11) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
   UNIQUE KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -75,10 +75,10 @@ CREATE TABLE `tbl_fields_number` (
 -- *** STRUCTURE: `tbl_fields_sectionlink` ***
 DROP TABLE IF EXISTS `tbl_fields_sectionlink`;
 CREATE TABLE `tbl_fields_sectionlink` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `field_id` int(11) unsigned NOT NULL default '0',
-  `section_association_list` varchar(255) character set utf8 collate utf8_unicode_ci NOT NULL default '',
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `section_association_list` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
@@ -89,12 +89,12 @@ INSERT INTO `tbl_fields_sectionlink` (`id`, `field_id`, `section_association_lis
 -- *** STRUCTURE: `tbl_fields_select` ***
 DROP TABLE IF EXISTS `tbl_fields_select`;
 CREATE TABLE `tbl_fields_select` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `field_id` int(11) unsigned NOT NULL default '0',
-  `allow_multiple_selection` enum('yes','no') character set utf8 collate utf8_unicode_ci NOT NULL default 'no',
-  `static_options` text character set utf8 collate utf8_unicode_ci,
-  `dynamic_options` int(11) unsigned default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `allow_multiple_selection` enum('yes','no') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `static_options` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `dynamic_options` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -103,12 +103,12 @@ CREATE TABLE `tbl_fields_select` (
 -- *** STRUCTURE: `tbl_fields_selectbox_link` ***
 DROP TABLE IF EXISTS `tbl_fields_selectbox_link`;
 CREATE TABLE `tbl_fields_selectbox_link` (
-  `id` int(11) unsigned NOT NULL auto_increment,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `field_id` int(11) unsigned NOT NULL,
-  `allow_multiple_selection` enum('yes','no') NOT NULL default 'no',
+  `allow_multiple_selection` enum('yes','no') NOT NULL DEFAULT 'no',
   `related_field_id` varchar(255) NOT NULL,
-  `limit` int(4) unsigned NOT NULL default '20',
-  PRIMARY KEY  (`id`),
+  `limit` int(4) unsigned NOT NULL DEFAULT '20',
+  PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -117,11 +117,11 @@ CREATE TABLE `tbl_fields_selectbox_link` (
 -- *** STRUCTURE: `tbl_fields_taglist` ***
 DROP TABLE IF EXISTS `tbl_fields_taglist`;
 CREATE TABLE `tbl_fields_taglist` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `field_id` int(11) unsigned NOT NULL default '0',
-  `validator` varchar(100) character set utf8 collate utf8_unicode_ci default NULL,
-  `pre_populate_source` varchar(15) character set utf8 collate utf8_unicode_ci default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `validator` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `pre_populate_source` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`),
   KEY `pre_populate_source` (`pre_populate_source`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -131,11 +131,11 @@ CREATE TABLE `tbl_fields_taglist` (
 -- *** STRUCTURE: `tbl_fields_textarea` ***
 DROP TABLE IF EXISTS `tbl_fields_textarea`;
 CREATE TABLE `tbl_fields_textarea` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `field_id` int(11) unsigned NOT NULL default '0',
-  `formatter` varchar(100) character set utf8 collate utf8_unicode_ci default NULL,
-  `size` int(3) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `formatter` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `size` int(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
@@ -149,11 +149,11 @@ INSERT INTO `tbl_fields_textarea` (`id`, `field_id`, `formatter`, `size`) VALUES
 -- *** STRUCTURE: `tbl_fields_upload` ***
 DROP TABLE IF EXISTS `tbl_fields_upload`;
 CREATE TABLE `tbl_fields_upload` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `field_id` int(11) unsigned NOT NULL default '0',
-  `destination` varchar(255) character set utf8 collate utf8_unicode_ci NOT NULL default '',
-  `validator` varchar(50) character set utf8 collate utf8_unicode_ci default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `destination` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `validator` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -162,11 +162,11 @@ CREATE TABLE `tbl_fields_upload` (
 -- *** STRUCTURE: `tbl_entries_data_1` ***
 DROP TABLE IF EXISTS `tbl_entries_data_1`;
 CREATE TABLE `tbl_entries_data_1` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
-  `handle` varchar(255) default NULL,
-  `value` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `handle` varchar(255) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `handle` (`handle`),
   KEY `value` (`value`)
@@ -182,15 +182,15 @@ INSERT INTO `tbl_entries_data_1` (`id`, `entry_id`, `handle`, `value`) VALUES (1
 -- *** STRUCTURE: `tbl_entries_data_10` ***
 DROP TABLE IF EXISTS `tbl_entries_data_10`;
 CREATE TABLE `tbl_entries_data_10` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
-  `handle` varchar(255) default NULL,
-  `value` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `handle` varchar(255) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `handle` (`handle`),
   KEY `value` (`value`)
-) ENGINE=MyISAM AUTO_INCREMENT=340 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=342 DEFAULT CHARSET=utf8;
 
 -- *** DATA: `tbl_entries_data_10` ***
 INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `handle`, `value`) VALUES (292, 10, 'menus', 'Menus');
@@ -213,7 +213,7 @@ INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `handle`, `value`) VALUES (
 INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `handle`, `value`) VALUES (333, 27, 'symphony', 'Symphony');
 INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `handle`, `value`) VALUES (334, 28, 'overture-forum', 'Overture Forum');
 INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `handle`, `value`) VALUES (336, 31, 'issues', 'Issues');
-INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `handle`, `value`) VALUES (339, 32, 'home', 'Home');
+INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `handle`, `value`) VALUES (341, 32, 'home', 'Home');
 INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `handle`, `value`) VALUES (332, 33, 'login', 'Login');
 INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `handle`, `value`) VALUES (296, 34, 'site', 'Site');
 INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `handle`, `value`) VALUES (297, 35, 'system', 'System');
@@ -224,33 +224,33 @@ INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `handle`, `value`) VALUES (
 -- *** STRUCTURE: `tbl_entries_data_11` ***
 DROP TABLE IF EXISTS `tbl_entries_data_11`;
 CREATE TABLE `tbl_entries_data_11` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
-  `handle` varchar(255) default NULL,
-  `value` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `handle` varchar(255) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `handle` (`handle`),
   KEY `value` (`value`)
-) ENGINE=MyISAM AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=95 DEFAULT CHARSET=utf8;
 
 -- *** DATA: `tbl_entries_data_11` ***
 INSERT INTO `tbl_entries_data_11` (`id`, `entry_id`, `handle`, `value`) VALUES (89, 33, 'login-status', 'Login Status');
 INSERT INTO `tbl_entries_data_11` (`id`, `entry_id`, `handle`, `value`) VALUES (73, 34, 'site-administration', 'Site Administration');
 INSERT INTO `tbl_entries_data_11` (`id`, `entry_id`, `handle`, `value`) VALUES (74, 35, 'system-administration', 'System Administration');
-INSERT INTO `tbl_entries_data_11` (`id`, `entry_id`, `handle`, `value`) VALUES (92, 32, 'calendar-02', 'Calendar 0.2');
+INSERT INTO `tbl_entries_data_11` (`id`, `entry_id`, `handle`, `value`) VALUES (94, 32, 'calendar-04', 'Calendar 0.4');
 
 -- *** STRUCTURE: `tbl_entries_data_12` ***
 DROP TABLE IF EXISTS `tbl_entries_data_12`;
 CREATE TABLE `tbl_entries_data_12` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
   `value` text,
   `value_formatted` text,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   FULLTEXT KEY `value` (`value`)
-) ENGINE=MyISAM AUTO_INCREMENT=340 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=342 DEFAULT CHARSET=utf8;
 
 -- *** DATA: `tbl_entries_data_12` ***
 INSERT INTO `tbl_entries_data_12` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (292, 10, NULL, NULL);
@@ -279,19 +279,19 @@ INSERT INTO `tbl_entries_data_12` (`id`, `entry_id`, `value`, `value_formatted`)
 INSERT INTO `tbl_entries_data_12` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (296, 34, 'An area where I can have a list of favourite sites, tools, etc.', '<p>An area where I can have a list of favourite sites, tools, etc.</p>\n');
 INSERT INTO `tbl_entries_data_12` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (297, 35, 'This area is strictly for managing the backend of the site.', '<p>This area is strictly for managing the backend of the site.</p>\n');
 INSERT INTO `tbl_entries_data_12` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (304, 40, NULL, NULL);
-INSERT INTO `tbl_entries_data_12` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (339, 32, '### A Symphony Ensemble\r\n\r\nVersion 0.3 | 4 July 2009\r\n\r\nThe Calendar Symphony Ensemble has been created specifically with the goal of managing dates and calendars. Keep in mind that this ensemble is in an experimental state. Hopefully, it will provide a starting point on which to build your own ideas. To view the application, you will need to [log in](/login/).\r\n\r\nDeveloped by Stephen Bau, [MGDC](http://www.gdc.net/join/member/articles103.php), Lead Designer, [Domain7 Solutions Inc](http://www.domain7.com/)\r\n\r\n### Notes\r\n\r\n* The calendar application includes [year](/calendar/year/), [month](/calendar/), [week](/calendar/week/) and [day](/calendar/day/) views.\r\n* Consult the [Symphony CMS Forum](http://symphony-cms.com/forum/discussions/201/) for more information\r\n\r\n### Change Log\r\n\r\n* Version 0.3 - 4 July 2009 - Updated Ensemble to Symphony 2.0.3\r\n* Version 0.2 - 21 December 2008 - Updated Ensemble to Symphony 2.0\r\n* Version 0.1 - 11 April 2008 - Symphony 2 Beta Revision 5\r\n', '<h3>A Symphony Ensemble</h3>\n\n<p>Version 0.3 | 4 July 2009</p>\n\n<p>The Calendar Symphony Ensemble has been created specifically with the goal of managing dates and calendars. Keep in mind that this ensemble is in an experimental state. Hopefully, it will provide a starting point on which to build your own ideas. To view the application, you will need to <a href=\"/login/\">log in</a>.</p>\n\n<p>Developed by Stephen Bau, <a href=\"http://www.gdc.net/join/member/articles103.php\">MGDC</a>, Lead Designer, <a href=\"http://www.domain7.com/\">Domain7 Solutions Inc</a></p>\n\n<h3>Notes</h3>\n\n<ul>\n<li>The calendar application includes <a href=\"/calendar/year/\">year</a>, <a href=\"/calendar/\">month</a>, <a href=\"/calendar/week/\">week</a> and <a href=\"/calendar/day/\">day</a> views.</li>\n<li>Consult the <a href=\"http://symphony-cms.com/forum/discussions/201/\">Symphony CMS Forum</a> for more information</li>\n</ul>\n\n<h3>Change Log</h3>\n\n<ul>\n<li>Version 0.3 - 4 July 2009 - Updated Ensemble to Symphony 2.0.3</li>\n<li>Version 0.2 - 21 December 2008 - Updated Ensemble to Symphony 2.0</li>\n<li>Version 0.1 - 11 April 2008 - Symphony 2 Beta Revision 5</li>\n</ul>\n');
+INSERT INTO `tbl_entries_data_12` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (341, 32, '### A Symphony Ensemble\r\n\r\nVersion 0.4 | 24 Feb 2010\r\n\r\nThe Calendar Symphony Ensemble has been created specifically with the goal of managing dates and calendars. Keep in mind that this ensemble is in an experimental state. Hopefully, it will provide a starting point on which to build your own ideas. To view the application, you will need to [log in](/login/).\r\n\r\nDeveloped by Stephen Bau, [MGDC](http://www.gdc.net/join/member/articles103.php), Lead Designer, [Domain7 Solutions Inc](http://www.domain7.com/)\r\n\r\n### Notes\r\n\r\n* The calendar application includes [year](/calendar/year/), [month](/calendar/), [week](/calendar/week/) and [day](/calendar/day/) views.\r\n* Consult the [Symphony CMS Forum](http://symphony-cms.com/forum/discussions/201/) for more information\r\n\r\n### Change Log\r\n\r\n* Version 0.4 - 22 Feb 2010 - Updated Ensemble to Symphony 2.0.6\r\n* Version 0.3 - 4 July 2009 - Updated Ensemble to Symphony 2.0.3\r\n* Version 0.2 - 21 December 2008 - Updated Ensemble to Symphony 2.0\r\n* Version 0.1 - 11 April 2008 - Symphony 2 Beta Revision 5\r\n', '<h3>A Symphony Ensemble</h3>\n\n<p>Version 0.4 | 24 Feb 2010</p>\n\n<p>The Calendar Symphony Ensemble has been created specifically with the goal of managing dates and calendars. Keep in mind that this ensemble is in an experimental state. Hopefully, it will provide a starting point on which to build your own ideas. To view the application, you will need to <a href=\"/login/\">log in</a>.</p>\n\n<p>Developed by Stephen Bau, <a href=\"http://www.gdc.net/join/member/articles103.php\">MGDC</a>, Lead Designer, <a href=\"http://www.domain7.com/\">Domain7 Solutions Inc</a></p>\n\n<h3>Notes</h3>\n\n<ul>\n<li>The calendar application includes <a href=\"/calendar/year/\">year</a>, <a href=\"/calendar/\">month</a>, <a href=\"/calendar/week/\">week</a> and <a href=\"/calendar/day/\">day</a> views.</li>\n<li>Consult the <a href=\"http://symphony-cms.com/forum/discussions/201/\">Symphony CMS Forum</a> for more information</li>\n</ul>\n\n<h3>Change Log</h3>\n\n<ul>\n<li>Version 0.4 - 22 Feb 2010 - Updated Ensemble to Symphony 2.0.6</li>\n<li>Version 0.3 - 4 July 2009 - Updated Ensemble to Symphony 2.0.3</li>\n<li>Version 0.2 - 21 December 2008 - Updated Ensemble to Symphony 2.0</li>\n<li>Version 0.1 - 11 April 2008 - Symphony 2 Beta Revision 5</li>\n</ul>\n');
 
 -- *** STRUCTURE: `tbl_entries_data_13` ***
 DROP TABLE IF EXISTS `tbl_entries_data_13`;
 CREATE TABLE `tbl_entries_data_13` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
   `value` text,
   `value_formatted` text,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   FULLTEXT KEY `value` (`value`)
-) ENGINE=MyISAM AUTO_INCREMENT=340 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=342 DEFAULT CHARSET=utf8;
 
 -- *** DATA: `tbl_entries_data_13` ***
 INSERT INTO `tbl_entries_data_13` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (292, 10, NULL, NULL);
@@ -319,21 +319,21 @@ INSERT INTO `tbl_entries_data_13` (`id`, `entry_id`, `value`, `value_formatted`)
 INSERT INTO `tbl_entries_data_13` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (332, 33, 'To find out more about this Symphony Ensemble, read more about the features in this version on the home page. An extended entry is shown on the [home page](/) when you log in.', '<p>To find out more about this Symphony Ensemble, read more about the features in this version on the home page. An extended entry is shown on the <a href=\"/\">home page</a> when you log in.</p>\n');
 INSERT INTO `tbl_entries_data_13` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (296, 34, 'It can have a list of sites that I am currently working on, a list of commonly used resources, and a list of things to do.', '<p>It can have a list of sites that I am currently working on, a list of commonly used resources, and a list of things to do.</p>\n');
 INSERT INTO `tbl_entries_data_13` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (297, 35, 'This would involve the mechanics of building the site in Symphony. All of these items can be hidden from the general users of the site.', '<p>This would involve the mechanics of building the site in Symphony. All of these items can be hidden from the general users of the site.</p>\n');
-INSERT INTO `tbl_entries_data_13` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (339, 32, '### Symphony 2.0\r\n\r\nThis is an experiment to build an application with [Symphony](http://symphony-cms.com/). You’ll notice that once you are logged in, you have access to a number of additional features. Most notable is the system navigation bar at the top of the page that is only visible to users that are logged in to custom admin pages. This feature is not available to the Symphony core pages that you can find in the [Symphony admin area](/symphony/).\r\n\r\nTo switch this feature off, you can edit the [system-navigation.xsl](/symphony/blueprints/utilities/edit/system-navigation/) utility. The     `system-navigation` template has a parameter called `system-navigation-switch`     which you can give any value other than `\'on\'` to turn this feature off.\r\n\r\nYou’ll also notice that there are three admin areas: [Site](/site/), [System](/system/) and [Symphony](/symphony/).\r\n\r\nThere are also three sections in the Publish menu: [Menus](/symphony/publish/menus/), [Sections](/symphony/publish/sections/) and [Pages](/symphony/publish/pages/).\r\n\r\nAlso, note that I am using [Markdown](http://daringfireball.net/projects/markdown/) to format my entries, but I am also using Allen Chang’s [typography.xsl](http://symphony-cms.com/forum/discussions/152/) file with some slight additions to ensure that the URLs that I am using here will always point to the right place, regardless of whether this site is published at the root of a domain or deep in a subdirectory. Just be sure to format all internal links with a leading slash for all links relative to the root of this install of Symphony.\r\n\r\n### Powered by XML\r\n\r\nInformation is stored in a MySQL database and can be easily edited through the [Symphony administration interface](/symphony/). The interface is extremely customizable, allowing the creation of several types of [custom fields](/symphony/blueprints/sections/edit/3/) that can be organized into [Sections](/symphony/blueprints/sections/) that appear under the [Publish](/symphony/) menu. You can see by editing [this entry](/symphony/publish/pages/edit/32/), found in the [Pages](/symphony/publish/pages/) Section.\r\n\r\nThe [XML data source](/symphony/blueprints/datasources/edit/page_details/) for the page content is configured with the Data Source Editor, found under the [Blueprints : Components](/symphony/blueprints/components/) menu. The data source is then attached to the [page template](/symphony/blueprints/pages/edit/1/) (click on the “Configure” button in the top right to view the data sources attached to a page). The data for this entry is converted into XML data to be transformed by XSL templates into HTML pages to be served to web browsers. To view the [XML data](?debug) for any front-end page, add   `?debug`   at the end of the URI of the page. Of course, this is only accessible to logged-in site administrators.\r\n\r\n### Powered by XSLT\r\n\r\nAll front-end pages are built with XSLT. You can find the page templates listed under the [Blueprints : Pages](/symphony/blueprints/pages/) menu. The [page template](/symphony/blueprints/pages/edit/1/) can be edited within the Symphony web interface, or you can use a FTP application to edit files directly on the server. The [master template](/symphony/blueprints/utilities/edit/public-master/) has been created as a utility that can be imported by page templates to control layout using XSL templates. Other templates can also be imported in this same way and can themselves import other templates.\r\n\r\n### Extensible and Customizable\r\n\r\nVery little is assumed by Symphony. The application has been stripped down to mere essentials in order to allow developers to customize the interface as they like. Even [Preferences](/symphony/system/preferences/) are [Extensions](/symphony/system/extensions/) that are installed and enabled as required by the needs of the users and developers.\r\n\r\nCustom [Events](/symphony/blueprints/components/) can be written in PHP to provide additional functionality. Events are attached to page templates, enabling the ability for front-end forms. In this way, the core functionality of the system can be extended by building custom admin pages. The [Site Administration](/site/) system for this ensemble has been created to show the relationships between entries in linked sections. The ability to [copy entries](/site/pages/symphony/27/copy/) has been added by populating fields with data from other entries and saving this data as a new entry.\r\n\r\nFront end forms also allow for the ability to [edit multiple entries](/symphony/blueprints/events/edit/publish_pages/) at once. For example, all the menu items in the System Navigation bar can be edited by a single click by viewing a list of all the [Pages](/site/pages/) in the site, and clicking on the [Edit Pages](/site/pages/edit/) button at the bottom of the page. Entries can then be moved from one section to another through these custom admin pages, even though the core system does not provide this functionality with Section Links.', '<h3>Symphony 2.0</h3>\n\n<p>This is an experiment to build an application with <a href=\"http://symphony-cms.com/\">Symphony</a>. You’ll notice that once you are logged in, you have access to a number of additional features. Most notable is the system navigation bar at the top of the page that is only visible to users that are logged in to custom admin pages. This feature is not available to the Symphony core pages that you can find in the <a href=\"/symphony/\">Symphony admin area</a>.</p>\n\n<p>To switch this feature off, you can edit the <a href=\"/symphony/blueprints/utilities/edit/system-navigation/\">system-navigation.xsl</a> utility. The     <code>system-navigation</code> template has a parameter called <code>system-navigation-switch</code>     which you can give any value other than <code>\'on\'</code> to turn this feature off.</p>\n\n<p>You’ll also notice that there are three admin areas: <a href=\"/site/\">Site</a>, <a href=\"/system/\">System</a> and <a href=\"/symphony/\">Symphony</a>.</p>\n\n<p>There are also three sections in the Publish menu: <a href=\"/symphony/publish/menus/\">Menus</a>, <a href=\"/symphony/publish/sections/\">Sections</a> and <a href=\"/symphony/publish/pages/\">Pages</a>.</p>\n\n<p>Also, note that I am using <a href=\"http://daringfireball.net/projects/markdown/\">Markdown</a> to format my entries, but I am also using Allen Chang’s <a href=\"http://symphony-cms.com/forum/discussions/152/\">typography.xsl</a> file with some slight additions to ensure that the URLs that I am using here will always point to the right place, regardless of whether this site is published at the root of a domain or deep in a subdirectory. Just be sure to format all internal links with a leading slash for all links relative to the root of this install of Symphony.</p>\n\n<h3>Powered by XML</h3>\n\n<p>Information is stored in a MySQL database and can be easily edited through the <a href=\"/symphony/\">Symphony administration interface</a>. The interface is extremely customizable, allowing the creation of several types of <a href=\"/symphony/blueprints/sections/edit/3/\">custom fields</a> that can be organized into <a href=\"/symphony/blueprints/sections/\">Sections</a> that appear under the <a href=\"/symphony/\">Publish</a> menu. You can see by editing <a href=\"/symphony/publish/pages/edit/32/\">this entry</a>, found in the <a href=\"/symphony/publish/pages/\">Pages</a> Section.</p>\n\n<p>The <a href=\"/symphony/blueprints/datasources/edit/page_details/\">XML data source</a> for the page content is configured with the Data Source Editor, found under the <a href=\"/symphony/blueprints/components/\">Blueprints : Components</a> menu. The data source is then attached to the <a href=\"/symphony/blueprints/pages/edit/1/\">page template</a> (click on the “Configure” button in the top right to view the data sources attached to a page). The data for this entry is converted into XML data to be transformed by XSL templates into HTML pages to be served to web browsers. To view the <a href=\"?debug\">XML data</a> for any front-end page, add   <code>?debug</code>   at the end of the URI of the page. Of course, this is only accessible to logged-in site administrators.</p>\n\n<h3>Powered by XSLT</h3>\n\n<p>All front-end pages are built with XSLT. You can find the page templates listed under the <a href=\"/symphony/blueprints/pages/\">Blueprints : Pages</a> menu. The <a href=\"/symphony/blueprints/pages/edit/1/\">page template</a> can be edited within the Symphony web interface, or you can use a FTP application to edit files directly on the server. The <a href=\"/symphony/blueprints/utilities/edit/public-master/\">master template</a> has been created as a utility that can be imported by page templates to control layout using XSL templates. Other templates can also be imported in this same way and can themselves import other templates.</p>\n\n<h3>Extensible and Customizable</h3>\n\n<p>Very little is assumed by Symphony. The application has been stripped down to mere essentials in order to allow developers to customize the interface as they like. Even <a href=\"/symphony/system/preferences/\">Preferences</a> are <a href=\"/symphony/system/extensions/\">Extensions</a> that are installed and enabled as required by the needs of the users and developers.</p>\n\n<p>Custom <a href=\"/symphony/blueprints/components/\">Events</a> can be written in PHP to provide additional functionality. Events are attached to page templates, enabling the ability for front-end forms. In this way, the core functionality of the system can be extended by building custom admin pages. The <a href=\"/site/\">Site Administration</a> system for this ensemble has been created to show the relationships between entries in linked sections. The ability to <a href=\"/site/pages/symphony/27/copy/\">copy entries</a> has been added by populating fields with data from other entries and saving this data as a new entry.</p>\n\n<p>Front end forms also allow for the ability to <a href=\"/symphony/blueprints/events/edit/publish_pages/\">edit multiple entries</a> at once. For example, all the menu items in the System Navigation bar can be edited by a single click by viewing a list of all the <a href=\"/site/pages/\">Pages</a> in the site, and clicking on the <a href=\"/site/pages/edit/\">Edit Pages</a> button at the bottom of the page. Entries can then be moved from one section to another through these custom admin pages, even though the core system does not provide this functionality with Section Links.</p>\n');
+INSERT INTO `tbl_entries_data_13` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (341, 32, '### Symphony 2.0\r\n\r\nThis is an experiment to build an application with [Symphony](http://symphony-cms.com/). Youâ€™ll notice that once you are logged in, you have access to a number of additional features. Most notable is the system navigation bar at the top of the page that is only visible to users that are logged in to custom admin pages. This feature is not available to the Symphony core pages that you can find in the [Symphony admin area](/symphony/).\r\n\r\nTo switch this feature off, you can edit the [system-navigation.xsl](/symphony/blueprints/utilities/edit/system-navigation/) utility. The     `system-navigation` template has a parameter called `system-navigation-switch`     which you can give any value other than `\'on\'` to turn this feature off.\r\n\r\nYouâ€™ll also notice that there are three admin areas: [Site](/site/), [System](/system/) and [Symphony](/symphony/).\r\n\r\nThere are also three sections in the Publish menu: [Menus](/symphony/publish/menus/), [Sections](/symphony/publish/sections/) and [Pages](/symphony/publish/pages/).\r\n\r\nAlso, note that I am using [Markdown](http://daringfireball.net/projects/markdown/) to format my entries, but I am also using Allen Changâ€™s [typography.xsl](http://symphony-cms.com/forum/discussions/152/) file with some slight additions to ensure that the URLs that I am using here will always point to the right place, regardless of whether this site is published at the root of a domain or deep in a subdirectory. Just be sure to format all internal links with a leading slash for all links relative to the root of this install of Symphony.\r\n\r\n### Powered by XML\r\n\r\nInformation is stored in a MySQL database and can be easily edited through the [Symphony administration interface](/symphony/). The interface is extremely customizable, allowing the creation of several types of [custom fields](/symphony/blueprints/sections/edit/3/) that can be organized into [Sections](/symphony/blueprints/sections/) that appear under the [Publish](/symphony/) menu. You can see by editing [this entry](/symphony/publish/pages/edit/32/), found in the [Pages](/symphony/publish/pages/) Section.\r\n\r\nThe [XML data source](/symphony/blueprints/datasources/edit/page_details/) for the page content is configured with the Data Source Editor, found under the [Blueprints : Components](/symphony/blueprints/components/) menu. The data source is then attached to the [page template](/symphony/blueprints/pages/edit/1/) (click on the â€œConfigureâ€ button in the top right to view the data sources attached to a page). The data for this entry is converted into XML data to be transformed by XSL templates into HTML pages to be served to web browsers. To view the [XML data](?debug) for any front-end page, add   `?debug`   at the end of the URI of the page. Of course, this is only accessible to logged-in site administrators.\r\n\r\n### Powered by XSLT\r\n\r\nAll front-end pages are built with XSLT. You can find the page templates listed under the [Blueprints : Pages](/symphony/blueprints/pages/) menu. The [page template](/symphony/blueprints/pages/edit/1/) can be edited within the Symphony web interface, or you can use a FTP application to edit files directly on the server. The [master template](/symphony/blueprints/utilities/edit/public-master/) has been created as a utility that can be imported by page templates to control layout using XSL templates. Other templates can also be imported in this same way and can themselves import other templates.\r\n\r\n### Extensible and Customizable\r\n\r\nVery little is assumed by Symphony. The application has been stripped down to mere essentials in order to allow developers to customize the interface as they like. Even [Preferences](/symphony/system/preferences/) are [Extensions](/symphony/system/extensions/) that are installed and enabled as required by the needs of the users and developers.\r\n\r\nCustom [Events](/symphony/blueprints/components/) can be written in PHP to provide additional functionality. Events are attached to page templates, enabling the ability for front-end forms. In this way, the core functionality of the system can be extended by building custom admin pages. The [Site Administration](/site/) system for this ensemble has been created to show the relationships between entries in linked sections. The ability to [copy entries](/site/pages/symphony/27/copy/) has been added by populating fields with data from other entries and saving this data as a new entry.\r\n\r\nFront end forms also allow for the ability to [edit multiple entries](/symphony/blueprints/events/edit/publish_pages/) at once. For example, all the menu items in the System Navigation bar can be edited by a single click by viewing a list of all the [Pages](/site/pages/) in the site, and clicking on the [Edit Pages](/site/pages/edit/) button at the bottom of the page. Entries can then be moved from one section to another through these custom admin pages, even though the core system does not provide this functionality with Section Links.', '<h3>Symphony 2.0</h3>\n\n<p>This is an experiment to build an application with <a href=\"http://symphony-cms.com/\">Symphony</a>. Youâ€™ll notice that once you are logged in, you have access to a number of additional features. Most notable is the system navigation bar at the top of the page that is only visible to users that are logged in to custom admin pages. This feature is not available to the Symphony core pages that you can find in the <a href=\"/symphony/\">Symphony admin area</a>.</p>\n\n<p>To switch this feature off, you can edit the <a href=\"/symphony/blueprints/utilities/edit/system-navigation/\">system-navigation.xsl</a> utility. The     <code>system-navigation</code> template has a parameter called <code>system-navigation-switch</code>     which you can give any value other than <code>\'on\'</code> to turn this feature off.</p>\n\n<p>Youâ€™ll also notice that there are three admin areas: <a href=\"/site/\">Site</a>, <a href=\"/system/\">System</a> and <a href=\"/symphony/\">Symphony</a>.</p>\n\n<p>There are also three sections in the Publish menu: <a href=\"/symphony/publish/menus/\">Menus</a>, <a href=\"/symphony/publish/sections/\">Sections</a> and <a href=\"/symphony/publish/pages/\">Pages</a>.</p>\n\n<p>Also, note that I am using <a href=\"http://daringfireball.net/projects/markdown/\">Markdown</a> to format my entries, but I am also using Allen Changâ€™s <a href=\"http://symphony-cms.com/forum/discussions/152/\">typography.xsl</a> file with some slight additions to ensure that the URLs that I am using here will always point to the right place, regardless of whether this site is published at the root of a domain or deep in a subdirectory. Just be sure to format all internal links with a leading slash for all links relative to the root of this install of Symphony.</p>\n\n<h3>Powered by XML</h3>\n\n<p>Information is stored in a MySQL database and can be easily edited through the <a href=\"/symphony/\">Symphony administration interface</a>. The interface is extremely customizable, allowing the creation of several types of <a href=\"/symphony/blueprints/sections/edit/3/\">custom fields</a> that can be organized into <a href=\"/symphony/blueprints/sections/\">Sections</a> that appear under the <a href=\"/symphony/\">Publish</a> menu. You can see by editing <a href=\"/symphony/publish/pages/edit/32/\">this entry</a>, found in the <a href=\"/symphony/publish/pages/\">Pages</a> Section.</p>\n\n<p>The <a href=\"/symphony/blueprints/datasources/edit/page_details/\">XML data source</a> for the page content is configured with the Data Source Editor, found under the <a href=\"/symphony/blueprints/components/\">Blueprints : Components</a> menu. The data source is then attached to the <a href=\"/symphony/blueprints/pages/edit/1/\">page template</a> (click on the â€œConfigureâ€ button in the top right to view the data sources attached to a page). The data for this entry is converted into XML data to be transformed by XSL templates into HTML pages to be served to web browsers. To view the <a href=\"?debug\">XML data</a> for any front-end page, add   <code>?debug</code>   at the end of the URI of the page. Of course, this is only accessible to logged-in site administrators.</p>\n\n<h3>Powered by XSLT</h3>\n\n<p>All front-end pages are built with XSLT. You can find the page templates listed under the <a href=\"/symphony/blueprints/pages/\">Blueprints : Pages</a> menu. The <a href=\"/symphony/blueprints/pages/edit/1/\">page template</a> can be edited within the Symphony web interface, or you can use a FTP application to edit files directly on the server. The <a href=\"/symphony/blueprints/utilities/edit/public-master/\">master template</a> has been created as a utility that can be imported by page templates to control layout using XSL templates. Other templates can also be imported in this same way and can themselves import other templates.</p>\n\n<h3>Extensible and Customizable</h3>\n\n<p>Very little is assumed by Symphony. The application has been stripped down to mere essentials in order to allow developers to customize the interface as they like. Even <a href=\"/symphony/system/preferences/\">Preferences</a> are <a href=\"/symphony/system/extensions/\">Extensions</a> that are installed and enabled as required by the needs of the users and developers.</p>\n\n<p>Custom <a href=\"/symphony/blueprints/components/\">Events</a> can be written in PHP to provide additional functionality. Events are attached to page templates, enabling the ability for front-end forms. In this way, the core functionality of the system can be extended by building custom admin pages. The <a href=\"/site/\">Site Administration</a> system for this ensemble has been created to show the relationships between entries in linked sections. The ability to <a href=\"/site/pages/symphony/27/copy/\">copy entries</a> has been added by populating fields with data from other entries and saving this data as a new entry.</p>\n\n<p>Front end forms also allow for the ability to <a href=\"/symphony/blueprints/events/edit/publish_pages/\">edit multiple entries</a> at once. For example, all the menu items in the System Navigation bar can be edited by a single click by viewing a list of all the <a href=\"/site/pages/\">Pages</a> in the site, and clicking on the <a href=\"/site/pages/edit/\">Edit Pages</a> button at the bottom of the page. Entries can then be moved from one section to another through these custom admin pages, even though the core system does not provide this functionality with Section Links.</p>\n');
 INSERT INTO `tbl_entries_data_13` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (304, 40, NULL, NULL);
 
 -- *** STRUCTURE: `tbl_entries_data_14` ***
 DROP TABLE IF EXISTS `tbl_entries_data_14`;
 CREATE TABLE `tbl_entries_data_14` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
-  `handle` varchar(255) default NULL,
-  `value` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `handle` varchar(255) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `handle` (`handle`),
   KEY `value` (`value`)
-) ENGINE=MyISAM AUTO_INCREMENT=340 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=342 DEFAULT CHARSET=utf8;
 
 -- *** DATA: `tbl_entries_data_14` ***
 INSERT INTO `tbl_entries_data_14` (`id`, `entry_id`, `handle`, `value`) VALUES (292, 10, 'symphony-publish-menus', '/symphony/publish/menus/');
@@ -358,7 +358,7 @@ INSERT INTO `tbl_entries_data_14` (`id`, `entry_id`, `handle`, `value`) VALUES (
 INSERT INTO `tbl_entries_data_14` (`id`, `entry_id`, `handle`, `value`) VALUES (332, 33, 'login', '/login/');
 INSERT INTO `tbl_entries_data_14` (`id`, `entry_id`, `handle`, `value`) VALUES (296, 34, 'site', '/site/');
 INSERT INTO `tbl_entries_data_14` (`id`, `entry_id`, `handle`, `value`) VALUES (297, 35, 'system', '/system/');
-INSERT INTO `tbl_entries_data_14` (`id`, `entry_id`, `handle`, `value`) VALUES (339, 32, 'home', '/home/');
+INSERT INTO `tbl_entries_data_14` (`id`, `entry_id`, `handle`, `value`) VALUES (341, 32, 'home', '/home/');
 INSERT INTO `tbl_entries_data_14` (`id`, `entry_id`, `handle`, `value`) VALUES (309, 19, 'debug=params', '?debug=params');
 INSERT INTO `tbl_entries_data_14` (`id`, `entry_id`, `handle`, `value`) VALUES (304, 40, 'http-daringfireballnet-projects-markdown', 'http://daringfireball.net/projects/markdown/');
 INSERT INTO `tbl_entries_data_14` (`id`, `entry_id`, `handle`, `value`) VALUES (335, 29, 'http-symphony-cmscom-downloads', 'http://symphony-cms.com/downloads/');
@@ -367,13 +367,13 @@ INSERT INTO `tbl_entries_data_14` (`id`, `entry_id`, `handle`, `value`) VALUES (
 -- *** STRUCTURE: `tbl_entries_data_15` ***
 DROP TABLE IF EXISTS `tbl_entries_data_15`;
 CREATE TABLE `tbl_entries_data_15` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
-  `value` double default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `value` double DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `value` (`value`)
-) ENGINE=MyISAM AUTO_INCREMENT=340 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=342 DEFAULT CHARSET=utf8;
 
 -- *** DATA: `tbl_entries_data_15` ***
 INSERT INTO `tbl_entries_data_15` (`id`, `entry_id`, `value`) VALUES (292, 10, 1);
@@ -398,7 +398,7 @@ INSERT INTO `tbl_entries_data_15` (`id`, `entry_id`, `value`) VALUES (334, 28, 2
 INSERT INTO `tbl_entries_data_15` (`id`, `entry_id`, `value`) VALUES (335, 29, 3);
 INSERT INTO `tbl_entries_data_15` (`id`, `entry_id`, `value`) VALUES (302, 30, 4);
 INSERT INTO `tbl_entries_data_15` (`id`, `entry_id`, `value`) VALUES (336, 31, 5);
-INSERT INTO `tbl_entries_data_15` (`id`, `entry_id`, `value`) VALUES (339, 32, 1);
+INSERT INTO `tbl_entries_data_15` (`id`, `entry_id`, `value`) VALUES (341, 32, 1);
 INSERT INTO `tbl_entries_data_15` (`id`, `entry_id`, `value`) VALUES (332, 33, 20);
 INSERT INTO `tbl_entries_data_15` (`id`, `entry_id`, `value`) VALUES (296, 34, 2);
 INSERT INTO `tbl_entries_data_15` (`id`, `entry_id`, `value`) VALUES (297, 35, 10);
@@ -407,13 +407,13 @@ INSERT INTO `tbl_entries_data_15` (`id`, `entry_id`, `value`) VALUES (304, 40, 1
 -- *** STRUCTURE: `tbl_entries_data_16` ***
 DROP TABLE IF EXISTS `tbl_entries_data_16`;
 CREATE TABLE `tbl_entries_data_16` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
-  `relation_id` int(11) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `relation_id` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `relation_id` (`relation_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=340 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=342 DEFAULT CHARSET=utf8;
 
 -- *** DATA: `tbl_entries_data_16` ***
 INSERT INTO `tbl_entries_data_16` (`id`, `entry_id`, `relation_id`) VALUES (292, 10, 3);
@@ -438,7 +438,7 @@ INSERT INTO `tbl_entries_data_16` (`id`, `entry_id`, `relation_id`) VALUES (334,
 INSERT INTO `tbl_entries_data_16` (`id`, `entry_id`, `relation_id`) VALUES (335, 29, 9);
 INSERT INTO `tbl_entries_data_16` (`id`, `entry_id`, `relation_id`) VALUES (302, 30, 9);
 INSERT INTO `tbl_entries_data_16` (`id`, `entry_id`, `relation_id`) VALUES (336, 31, 9);
-INSERT INTO `tbl_entries_data_16` (`id`, `entry_id`, `relation_id`) VALUES (339, 32, 6);
+INSERT INTO `tbl_entries_data_16` (`id`, `entry_id`, `relation_id`) VALUES (341, 32, 6);
 INSERT INTO `tbl_entries_data_16` (`id`, `entry_id`, `relation_id`) VALUES (332, 33, 6);
 INSERT INTO `tbl_entries_data_16` (`id`, `entry_id`, `relation_id`) VALUES (296, 34, 6);
 INSERT INTO `tbl_entries_data_16` (`id`, `entry_id`, `relation_id`) VALUES (297, 35, 6);
@@ -447,10 +447,10 @@ INSERT INTO `tbl_entries_data_16` (`id`, `entry_id`, `relation_id`) VALUES (304,
 -- *** STRUCTURE: `tbl_entries_data_17` ***
 DROP TABLE IF EXISTS `tbl_entries_data_17`;
 CREATE TABLE `tbl_entries_data_17` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
-  `value` enum('yes','no') NOT NULL default 'yes',
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `value` enum('yes','no') NOT NULL DEFAULT 'yes',
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `value` (`value`)
 ) ENGINE=MyISAM AUTO_INCREMENT=160 DEFAULT CHARSET=latin1;
@@ -465,10 +465,10 @@ INSERT INTO `tbl_entries_data_17` (`id`, `entry_id`, `value`) VALUES (155, 38, '
 -- *** STRUCTURE: `tbl_entries_data_18` ***
 DROP TABLE IF EXISTS `tbl_entries_data_18`;
 CREATE TABLE `tbl_entries_data_18` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
-  `value` enum('yes','no') NOT NULL default 'yes',
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `value` enum('yes','no') NOT NULL DEFAULT 'yes',
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `value` (`value`)
 ) ENGINE=MyISAM AUTO_INCREMENT=161 DEFAULT CHARSET=latin1;
@@ -486,13 +486,13 @@ INSERT INTO `tbl_entries_data_18` (`id`, `entry_id`, `value`) VALUES (157, 39, '
 -- *** STRUCTURE: `tbl_entries_data_19` ***
 DROP TABLE IF EXISTS `tbl_entries_data_19`;
 CREATE TABLE `tbl_entries_data_19` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
-  `value` enum('yes','no') NOT NULL default 'yes',
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `value` enum('yes','no') NOT NULL DEFAULT 'yes',
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `value` (`value`)
-) ENGINE=MyISAM AUTO_INCREMENT=275 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=277 DEFAULT CHARSET=latin1;
 
 -- *** DATA: `tbl_entries_data_19` ***
 INSERT INTO `tbl_entries_data_19` (`id`, `entry_id`, `value`) VALUES (227, 10, 'no');
@@ -517,7 +517,7 @@ INSERT INTO `tbl_entries_data_19` (`id`, `entry_id`, `value`) VALUES (269, 28, '
 INSERT INTO `tbl_entries_data_19` (`id`, `entry_id`, `value`) VALUES (270, 29, 'no');
 INSERT INTO `tbl_entries_data_19` (`id`, `entry_id`, `value`) VALUES (237, 30, 'no');
 INSERT INTO `tbl_entries_data_19` (`id`, `entry_id`, `value`) VALUES (271, 31, 'no');
-INSERT INTO `tbl_entries_data_19` (`id`, `entry_id`, `value`) VALUES (274, 32, 'no');
+INSERT INTO `tbl_entries_data_19` (`id`, `entry_id`, `value`) VALUES (276, 32, 'no');
 INSERT INTO `tbl_entries_data_19` (`id`, `entry_id`, `value`) VALUES (267, 33, 'no');
 INSERT INTO `tbl_entries_data_19` (`id`, `entry_id`, `value`) VALUES (231, 34, 'no');
 INSERT INTO `tbl_entries_data_19` (`id`, `entry_id`, `value`) VALUES (232, 35, 'no');
@@ -526,11 +526,11 @@ INSERT INTO `tbl_entries_data_19` (`id`, `entry_id`, `value`) VALUES (239, 40, '
 -- *** STRUCTURE: `tbl_entries_data_2` ***
 DROP TABLE IF EXISTS `tbl_entries_data_2`;
 CREATE TABLE `tbl_entries_data_2` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
   `value` text,
   `value_formatted` text,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   FULLTEXT KEY `value` (`value`)
 ) ENGINE=MyISAM AUTO_INCREMENT=181 DEFAULT CHARSET=utf8;
@@ -545,11 +545,11 @@ INSERT INTO `tbl_entries_data_2` (`id`, `entry_id`, `value`, `value_formatted`) 
 -- *** STRUCTURE: `tbl_entries_data_3` ***
 DROP TABLE IF EXISTS `tbl_entries_data_3`;
 CREATE TABLE `tbl_entries_data_3` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
-  `handle` varchar(255) default NULL,
-  `value` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `handle` varchar(255) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `handle` (`handle`),
   KEY `value` (`value`)
@@ -568,11 +568,11 @@ INSERT INTO `tbl_entries_data_3` (`id`, `entry_id`, `handle`, `value`) VALUES (1
 -- *** STRUCTURE: `tbl_entries_data_4` ***
 DROP TABLE IF EXISTS `tbl_entries_data_4`;
 CREATE TABLE `tbl_entries_data_4` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
-  `handle` varchar(255) default NULL,
-  `value` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `handle` varchar(255) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `handle` (`handle`),
   KEY `value` (`value`)
@@ -591,11 +591,11 @@ INSERT INTO `tbl_entries_data_4` (`id`, `entry_id`, `handle`, `value`) VALUES (1
 -- *** STRUCTURE: `tbl_entries_data_5` ***
 DROP TABLE IF EXISTS `tbl_entries_data_5`;
 CREATE TABLE `tbl_entries_data_5` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
-  `handle` varchar(255) default NULL,
-  `value` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `handle` varchar(255) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `handle` (`handle`),
   KEY `value` (`value`)
@@ -607,11 +607,11 @@ INSERT INTO `tbl_entries_data_5` (`id`, `entry_id`, `handle`, `value`) VALUES (4
 -- *** STRUCTURE: `tbl_entries_data_6` ***
 DROP TABLE IF EXISTS `tbl_entries_data_6`;
 CREATE TABLE `tbl_entries_data_6` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
   `value` text,
   `value_formatted` text,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   FULLTEXT KEY `value` (`value`)
 ) ENGINE=MyISAM AUTO_INCREMENT=193 DEFAULT CHARSET=utf8;
@@ -629,11 +629,11 @@ INSERT INTO `tbl_entries_data_6` (`id`, `entry_id`, `value`, `value_formatted`) 
 -- *** STRUCTURE: `tbl_entries_data_7` ***
 DROP TABLE IF EXISTS `tbl_entries_data_7`;
 CREATE TABLE `tbl_entries_data_7` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
   `value` text,
   `value_formatted` text,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   FULLTEXT KEY `value` (`value`)
 ) ENGINE=MyISAM AUTO_INCREMENT=193 DEFAULT CHARSET=utf8;
@@ -651,10 +651,10 @@ INSERT INTO `tbl_entries_data_7` (`id`, `entry_id`, `value`, `value_formatted`) 
 -- *** STRUCTURE: `tbl_entries_data_8` ***
 DROP TABLE IF EXISTS `tbl_entries_data_8`;
 CREATE TABLE `tbl_entries_data_8` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
-  `value` double default NULL,
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `value` double DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `value` (`value`)
 ) ENGINE=MyISAM AUTO_INCREMENT=193 DEFAULT CHARSET=utf8;
@@ -672,10 +672,10 @@ INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `value`) VALUES (189, 39, 10
 -- *** STRUCTURE: `tbl_entries_data_9` ***
 DROP TABLE IF EXISTS `tbl_entries_data_9`;
 CREATE TABLE `tbl_entries_data_9` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `entry_id` int(11) unsigned NOT NULL default '0',
-  `relation_id` int(11) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`),
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `relation_id` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `relation_id` (`relation_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=193 DEFAULT CHARSET=utf8;
@@ -736,9 +736,9 @@ INSERT INTO `tbl_entries` (`id`, `section_id`, `author_id`, `creation_date`, `cr
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (1, 'markdown', 'enabled', 1.8);
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (6, 'selectbox_link_field', 'enabled', 1.9);
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (10, 'maintenance_mode', 'enabled', 1.1);
-INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (9, 'export_ensemble', 'enabled', 1.5);
+INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (20, 'export_ensemble', 'enabled', 1.11);
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (5, 'debugdevkit', 'enabled', 1);
-INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (7, 'jit_image_manipulation', 'enabled', 1.02);
+INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (14, 'jit_image_manipulation', 'enabled', 1.05);
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (8, 'profiledevkit', 'enabled', 1);
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (12, 'numberfield', 'enabled', 1.4);
 
@@ -748,14 +748,14 @@ INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (17, 10, '/system/preferences/', 'CustomActions', '__toggleMaintenanceMode');
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (16, 10, '/system/preferences/', 'Save', '__SavePreferences');
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (15, 10, '/system/preferences/', 'AddCustomPreferenceFieldsets', 'appendPreferences');
-INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (14, 9, '/system/preferences/', 'AddCustomPreferenceFieldsets', 'appendPreferences');
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (8, 5, '/frontend/', 'FrontendDevKitResolve', 'frontendDevKitResolve');
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (9, 5, '/frontend/', 'ManipulateDevKitNavigation', 'manipulateDevKitNavigation');
-INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (10, 7, '/system/preferences/', 'AddCustomPreferenceFieldsets', 'appendPreferences');
-INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (11, 7, '/system/preferences/', 'Save', '__SavePreferences');
+INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (22, 14, '/system/preferences/', 'AddCustomPreferenceFieldsets', 'appendPreferences');
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (12, 8, '/frontend/', 'FrontendDevKitResolve', 'frontendDevKitResolve');
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (13, 8, '/frontend/', 'ManipulateDevKitNavigation', 'manipulateDevKitNavigation');
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (20, 10, '/backend/', 'AppendPageAlert', '__appendAlert');
+INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (23, 14, '/system/preferences/', 'Save', '__SavePreferences');
+INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (29, 20, '/system/preferences/', 'AddCustomPreferenceFieldsets', 'appendPreferences');
 
 -- *** DATA: `tbl_fields` ***
 INSERT INTO `tbl_fields` (`id`, `label`, `element_name`, `type`, `parent_section`, `required`, `sortorder`, `location`, `show_column`) VALUES (1, 'Title', 'title', 'input', 1, 'yes', 0, 'main', 'yes');
