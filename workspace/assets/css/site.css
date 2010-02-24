@@ -32,9 +32,16 @@ body.site #nav > li a:hover {
 }
 body.system #nav > li.front-end a:active,
 body.site #nav > li a.active,
-body.site #nav > li a:active {
+body.site #nav > li a:active,
+body.site #nav > li a.active:hover {
 	color:#fff;
 	background-image:url("../../../symphony/assets/images/navigation.png");
+	background-color:#7E7E70;
+	background-position:0 0;
+	position:relative;
+}
+body.system #nav > li.content {
+	margin-left: 0;
 }
 
 
@@ -120,68 +127,44 @@ ul.entries li a:hover {
 
 /* buttons
 ----------------------------------------------- */
-a.new {
-	padding-left: 33px;
-	background: #81b934 url("../img/new.png");
-}
-a.copy {
-	padding-left: 36px;
-	background: #81b934 url("../img/btn_copy.png");
-}
-a.edit {
-	padding-left: 33px;
-	background: #81b934 url("../img/btn_edit.png");
-}
-h2 a.edit {
-	padding-left: 66px;
-	background: #81b934 url("../img/edit_entry.png");
-}
-.actions {
-	position:relative;
-}
-.actions a.delete {
-	padding-left: 51px;
-	background: #999 url("../../../symphony/assets/images/delete.png");
-	top:15px;
-	left:0;
-	position:absolute;
-}
-body.tables .actions a.delete {
-	margin-left:32px;
-}
-a.delete {
-	padding-left: 15px;
-	background: #999 url("../img/btn_delete.png");
-}
+a.delete {background-color: #998}
 body.tables .actions a.delete.active,
 a.delete.active {
 	background-color: #d43;
 	cursor:default;
 }
 a.delete:hover {background-color: #d43}
-a.preview {
-	padding-left: 56px;
-	background: #81b934 url("../img/preview.png");
-}
 
 ul.buttons {
-	height:32px;
+	/*height:36px;*/
 	background:#ddc;
-	margin-bottom:84px;
+	margin-bottom:24px;
 }
 ul.buttons a {
 	background-color:#998;
 }
-ul.buttons a.edit {top:8px; right:49px;}
-ul.buttons a.copy {top:8px; right:8px;}
-ul.buttons a.preview {top:8px; right:87px; background-image:url("../img/btn_preview.png")}
-ul.buttons a.delete {top:8px; left:8px;}
 
 ul.disabled a,
 ul.disabled a:active,
 ul.disabled a:hover {
 	background-color:#ccb;
 	cursor:default;
+}
+
+a.button {
+	font-size: .9em;
+}
+body.site a.button,
+body.site a.button:hover {
+	color: #fff;
+}
+ul.buttons li {
+	float:left;
+}
+ul.buttons li a {
+	margin-top: 6px;
+	margin-left: 6px;
+	margin-bottom: 6px;
 }
 
 

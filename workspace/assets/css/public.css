@@ -1,3 +1,11 @@
+#system-navigation {
+  margin:0 -19px;
+  padding:0 19px;
+  min-width:600px;
+}
+#system-navigation ul.menu {
+  margin:0 -19px;
+} 
 #nav {
 	min-width:600px;
 }
@@ -24,4 +32,7 @@ body.public #nav > li a:hover {
 	background-color:#7E7E70;
 	background-position:0 -30px;
 	position:relative;
+}
+body.public #nav > li a.active:hover {
+	background-position:0 0;
 }
