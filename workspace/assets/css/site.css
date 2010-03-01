@@ -151,7 +151,9 @@ ul.disabled a:hover {
 	cursor:default;
 }
 
-a.button {
+.actions a.button,
+.buttons a.button,
+.group a.button {
 	font-size: .9em;
 }
 body.site a.button,
@@ -228,4 +230,17 @@ content:"↓";
 }
 th a.active:after, th a[href*="ascending"]:after, th a.active[href*="ascending"]:hover:after {
 content:"↑";
+}
+
+
+body.tables h2 {
+	padding-bottom: 0;
+}
+body.tables div.actions {
+	width: auto;
+	padding-left: 19px;
+	float: none;
+}
+.actions a.delete {
+	float: left;
 }
