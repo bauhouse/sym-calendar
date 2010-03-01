@@ -237,8 +237,10 @@
     <xsl:when test="$entry = 'new'">
       <a href="{$entries-root}/new/" title="Create a new {$entry-type}" class="create button active">Create New</a>
     </xsl:when>
+    <xsl:otherwise>
+      <a href="{$current-root}/new/" title="Create a new entry" class="create button{$create-active}">Create New</a>
+    </xsl:otherwise>
   </xsl:choose>
-  <a href="{$current-root}/new/" title="Create a new entry" class="create button{$create-active}">Create New</a>
 </xsl:template>
 
 <xsl:template name="list-entries">
