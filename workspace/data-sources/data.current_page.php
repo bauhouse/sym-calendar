@@ -4,61 +4,71 @@
 	
 	Class datasourcecurrent_page extends Datasource{
 		
-		var $dsParamROOTELEMENT = 'current-page';
-		var $dsParamORDER = 'desc';
-		var $dsParamLIMIT = '20';
-		var $dsParamREDIRECTONEMPTY = 'no';
-		var $dsParamSORT = 'system:id';
-		var $dsParamSTARTPAGE = '1';
+		public $dsParamROOTELEMENT = 'current-page';
+		public $dsParamORDER = 'desc';
+		public $dsParamLIMIT = '20';
+		public $dsParamREDIRECTONEMPTY = 'no';
+		public $dsParamSORT = 'system:id';
+		public $dsParamSTARTPAGE = '1';
+		public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 		
-		var $dsParamFILTERS = array(
+		public $dsParamFILTERS = array(
 				'10' => '{$current-page}',
 				'19' => 'no',
 		);
 		
-		var $dsParamINCLUDEDELEMENTS = array(
+		public $dsParamINCLUDEDELEMENTS = array(
 				'title',
 				'heading',
-				'description',
-				'body',
+				'description: formatted',
+				'body: formatted',
 				'url',
 				'sort',
 				'section'
 		);
 
-		
-		function __construct(&$parent, $env=NULL, $process_params=true){
+		public function __construct(&$parent, $env=NULL, $process_params=true){
 			parent::__construct($parent, $env, $process_params);
 			$this->_dependencies = array();
 		}
 		
-		function about(){
+		public function about(){
 			return array(
 					 'name' => 'Current Page',
 					 'author' => array(
 							'name' => 'Stephen Bau',
-							'website' => 'http://designadmin/system-navigation',
-							'email' => 'stephen@bauhousedesign.com'),
+							'website' => 'http://home/sym/sym-calendar-207',
+							'email' => 'bauhouse@gmail.com'),
 					 'version' => '1.0',
-					 'release-date' => '2008-03-28T13:41:30+00:00');	
+					 'release-date' => '2010-02-28T18:19:11+00:00');	
 		}
 		
-		function getSource(){
+		public function getSource(){
 			return '3';
 		}
 		
-		function allowEditorToParse(){
+		public function allowEditorToParse(){
 			return true;
 		}
 		
-		function grab(&$param_pool){
-			$result = NULL;
+		public function grab(&$param_pool=NULL){
+			$result = new XMLElement($this->dsParamROOTELEMENT);
 				
-			include(TOOLKIT . '/data-sources/datasource.section.php');
-			
+			try{
+				include(TOOLKIT . '/data-sources/datasource.section.php');
+			}
+			catch(FrontendPageNotFoundException $e){
+				// Work around. This ensures the 404 page is displayed and
+				// is not picked up by the default catch() statement below
+				FrontendPageNotFoundExceptionHandler::render($e);
+			}			
+			catch(Exception $e){
+				$result->appendChild(new XMLElement('error', $e->getMessage()));
+				return $result;
+			}	
+
 			if($this->_force_empty_result) $result = $this->emptyXMLSet();
 			return $result;
 		}
 	}
 
-?>

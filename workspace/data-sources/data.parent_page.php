@@ -10,6 +10,7 @@
 		public $dsParamREDIRECTONEMPTY = 'no';
 		public $dsParamSORT = 'system:id';
 		public $dsParamSTARTPAGE = '1';
+		public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 		
 		public $dsParamFILTERS = array(
 				'10' => '{$root-page}',
@@ -19,8 +20,6 @@
 		public $dsParamINCLUDEDELEMENTS = array(
 				'title',
 				'heading',
-				'description',
-				'body',
 				'url',
 				'sort',
 				'section'
@@ -36,10 +35,10 @@
 					 'name' => 'Parent Page',
 					 'author' => array(
 							'name' => 'Stephen Bau',
-							'website' => 'http://home/sym/calendar',
-							'email' => 'stephen@domain7.com'),
+							'website' => 'http://home/sym/sym-calendar-207',
+							'email' => 'bauhouse@gmail.com'),
 					 'version' => '1.0',
-					 'release-date' => '2009-07-03T18:54:23+00:00');	
+					 'release-date' => '2010-03-01T15:20:37+00:00');	
 		}
 		
 		public function getSource(){
@@ -50,12 +49,17 @@
 			return true;
 		}
 		
-		public function grab(&$param_pool){
+		public function grab(&$param_pool=NULL){
 			$result = new XMLElement($this->dsParamROOTELEMENT);
 				
 			try{
 				include(TOOLKIT . '/data-sources/datasource.section.php');
 			}
+			catch(FrontendPageNotFoundException $e){
+				// Work around. This ensures the 404 page is displayed and
+				// is not picked up by the default catch() statement below
+				FrontendPageNotFoundExceptionHandler::render($e);
+			}			
 			catch(Exception $e){
 				$result->appendChild(new XMLElement('error', $e->getMessage()));
 				return $result;
