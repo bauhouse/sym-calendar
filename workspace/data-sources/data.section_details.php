@@ -24,6 +24,8 @@
 				'title',
 				'url',
 				'heading',
+				'description: formatted',
+				'body: formatted',
 				'sort',
 				'menu'
 		);
@@ -41,7 +43,7 @@
 							'website' => 'http://home/sym/sym-calendar-207',
 							'email' => 'bauhouse@gmail.com'),
 					 'version' => '1.0',
-					 'release-date' => '2010-03-01T15:32:38+00:00');	
+					 'release-date' => '2010-03-01T16:47:37+00:00');	
 		}
 		
 		public function getSource(){

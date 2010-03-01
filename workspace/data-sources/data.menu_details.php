@@ -21,7 +21,8 @@
 		);
 		
 		public $dsParamINCLUDEDELEMENTS = array(
-				'title'
+				'title',
+				'description: formatted'
 		);
 
 		public function __construct(&$parent, $env=NULL, $process_params=true){
@@ -37,7 +38,7 @@
 							'website' => 'http://home/sym/sym-calendar-207',
 							'email' => 'bauhouse@gmail.com'),
 					 'version' => '1.0',
-					 'release-date' => '2010-03-01T15:32:05+00:00');	
+					 'release-date' => '2010-03-01T16:46:37+00:00');	
 		}
 		
 		public function getSource(){

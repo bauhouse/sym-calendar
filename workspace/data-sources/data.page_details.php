@@ -23,6 +23,8 @@
 		public $dsParamINCLUDEDELEMENTS = array(
 				'title',
 				'heading',
+				'description: formatted',
+				'body: formatted',
 				'url',
 				'sort',
 				'section'
@@ -41,7 +43,7 @@
 							'website' => 'http://home/sym/sym-calendar-207',
 							'email' => 'bauhouse@gmail.com'),
 					 'version' => '1.0',
-					 'release-date' => '2010-03-01T15:31:32+00:00');	
+					 'release-date' => '2010-03-01T16:50:53+00:00');	
 		}
 		
 		public function getSource(){
