@@ -35,7 +35,6 @@ CREATE TABLE `tbl_fields_date` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `field_id` int(11) unsigned NOT NULL DEFAULT '0',
   `pre_populate` enum('yes','no') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
-  `calendar` enum('yes','no') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -778,7 +777,7 @@ INSERT INTO `tbl_fields` (`id`, `label`, `element_name`, `type`, `parent_section
 INSERT INTO `tbl_fields` (`id`, `label`, `element_name`, `type`, `parent_section`, `required`, `sortorder`, `location`, `show_column`) VALUES (19, 'Deleted', 'deleted', 'checkbox', 3, 'no', 7, 'sidebar', 'yes');
 
 -- *** DATA: `tbl_pages` ***
-INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (1, NULL, 'Home', 'home', NULL, NULL, 'current_page,menus,navigation,pages', 'login', 0);
+INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (1, NULL, 'Home', 'home', NULL, NULL, 'current_page,menus,navigation,pages,sections', 'login', 0);
 INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (2, NULL, 'Login', 'login', NULL, NULL, 'current_page,menus,navigation,pages,sections', 'login', 1);
 INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (3, NULL, 'Site', 'site', NULL, 'menu/section/page', 'current_page,menu,menus,navigation,pages,pages_by_section,parent_page,section,sections,sections_by_menu,site_sections', 'login,publish_menus', 2);
 INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (4, NULL, 'System', 'system', NULL, NULL, 'current_page,menus,navigation,pages,sections', 'login', 10);
@@ -791,7 +790,7 @@ INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `d
 INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (11, 8, 'Day', 'day', 'calendar', 'year/month/day/section/event', 'calendar,current_page,menus,navigation,pages,parent_page,sections', 'login', 9);
 
 -- *** DATA: `tbl_pages_types` ***
-INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (133, 1, 'index');
+INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (134, 1, 'index');
 INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (127, 3, 'admin');
 INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (132, 4, 'system');
 INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (113, 2, 'login');

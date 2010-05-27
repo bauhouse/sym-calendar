@@ -26,12 +26,12 @@
   <head>
     <title><xsl:value-of select="$website-name"/></title>
     <link rel="stylesheet" type="text/css" href="{$root}/symphony/assets/forms.css" />
-	<xsl:call-template name="system-nav-css"/>
     <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/site.css" />
+	<xsl:call-template name="system-nav-css"/>
   </head>
   <body class="system">
-    <xsl:call-template name="system-navigation"/>
     <form action="" method="post">
+      <xsl:call-template name="system-navigation"/>
       <h1><a href="{$root}/"><xsl:value-of select="$website-name"/></a></h1>
       <xsl:apply-templates select="data/navigation"/>
       <xsl:apply-templates/>

@@ -5,19 +5,20 @@ System Navigation
 
 #system-navigation {
   display:block;
-  width:100%;
   font-size:1.1em;
   background:#e3e0d1;
   position:relative;
-  z-index:1000;
+  z-index:5;
   min-width:600px;
+  margin:4.5em -19px -4.5em;
   }
-body.tables #system-navigation {
-	margin:0;
-	padding:0;
-  }
+body.tables h1,
+h1 {
+  padding-top: 1.8em;
+  margin-top: 3.81em;
+}
 body.tables #system-navigation ul.menu {
-	margin:0;
+  padding: 0 19px;
   }
 
 

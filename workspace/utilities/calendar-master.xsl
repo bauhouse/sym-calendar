@@ -73,19 +73,13 @@
     <title><xsl:value-of select="$website-name"/></title>
     <link rel="stylesheet" type="text/css" href="{$root}/symphony/assets/basic.css" />
     <link rel="stylesheet" type="text/css" href="{$root}/symphony/assets/admin.css" />
-	<xsl:call-template name="system-nav-css"/>
     <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/site.css" />
     <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/calendar.css" />
-    <style>
-      <xsl:attribute name="type">text/css</xsl:attribute>
-      <xsl:value-of select="concat('@import url(',$root,'/symphony/assets/basic.css);')"/>
-      <xsl:value-of select="concat('@import url(',$root,'/symphony/assets/admin.css);')"/>
-      <xsl:value-of select="concat('@import url(',$workspace,'/assets/css/calendar.css);')"/>
-    </style>
+	<xsl:call-template name="system-nav-css"/>
   </head>
   <body class="site">
-    <xsl:call-template name="system-navigation"/>
     <form action="" method="post">
+      <xsl:call-template name="system-navigation"/>
       <h1 id="top"><a href="{$root}/"><xsl:value-of select="$website-name"/></a></h1>
       <xsl:apply-templates select="data/navigation"/>
       <xsl:apply-templates/>

@@ -154,16 +154,16 @@
     <xsl:if test="$content-type = 'tables'">
 	  <link rel="stylesheet" type="text/css" href="{$root}/symphony/assets/tables.css" />
     </xsl:if>
-	<xsl:call-template name="system-nav-css"/>
     <link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/site.css" />
+	<xsl:call-template name="system-nav-css"/>
   </head>
   <body class="site {$content-type}">
-    <xsl:call-template name="system-navigation"/>
     <form action="" method="post" enctype="multipart/form-data">
       <xsl:if test="not($entry) or $entry = 'sort'">
         <xsl:attribute name="action"><xsl:value-of select="concat($current-root,'/edit/')"/></xsl:attribute>
       </xsl:if>
       <input name="MAX_FILE_SIZE" type="hidden" value="5242880" />
+      <xsl:call-template name="system-navigation"/>
       <xsl:call-template name="notice"/>
       <xsl:call-template name="confirm-delete"/>
       <h1><a href="{$root}/"><xsl:value-of select="$website-name"/></a></h1>

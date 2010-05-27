@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:param name="system-navigation-switch" select="'off'"/>
+<xsl:param name="system-navigation-switch" select="'on'"/>
 
 <xsl:template name="system-navigation">
   <xsl:if test="$is-logged-in and $system-navigation-switch = 'on'">
